@@ -1,91 +1,43 @@
 import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 
-// Constants
-//const ACO_TENANT_ID = 'NZwP3wKPFXBCTLGqxYWZne';
-const ACO_TENANT_ID = 'SwwUPNwHGzVRAKzZpcKk1t';
-const ACO_BASE_URL = `https://na1-sandbox.api.commerce.adobe.com/${ACO_TENANT_ID}`;
+// Load config
+const configResp = await fetch('/tools/products/config.json');
+const config = await configResp.json();
 
-//https://na1-sandbox.api.commerce.adobe.com/{{tenantId}}/api/v1/catalog/products
+const ACO_TENANT_ID = config.acoTenantId;
+const CATALOG_VIEW_ID = config.catalogViewId;
+const ACO_BASE_URL = `https://${config.region}-${config.environment}.api.commerce.adobe.com/${ACO_TENANT_ID}`;
 const ACO_URL = `${ACO_BASE_URL}/graphql`;
 
-// TENANT_ID=NZwP3wKPFXBCTLGqxYWZne
-// REGION=na1
-// ENVIRONMENT=sandbox
-
-// ACO Ingestion API endpoints
 const ACO_PRODUCTS_ENDPOINT = `${ACO_BASE_URL}/v1/catalog/products`;
 const ACO_PRODUCTS_DELETE_ENDPOINT = `${ACO_BASE_URL}/v1/catalog/products/delete`;
 const ACO_PRICES_ENDPOINT = `${ACO_BASE_URL}/v1/catalog/products/prices`;
 
 const PAGE_SIZE = 25;
-const CATALOG_VIEW_ID = '426ffe32-e0a9-4c53-8ec9-3f7118cbf6b2';
 const DEFAULT_LOCALE = 'en-US';
-const DEFAULT_PRICE_BOOK = 'wknd_global';
-const ALL_PRICE_BOOKS = ['wknd_global', 'wknd_vip'];
+const DEFAULT_PRICE_BOOK = '';
+const ALL_PRICE_BOOKS = [''];
 
-// Adobe IMS credentials for authentication
-const IMS_CLIENT_ID = 'f2060b271ca64684abafbbc7ebec20d2';
-const IMS_CLIENT_SECRET = 'p8e-uiUt_S57xxu5xBKRJBLrEakl6NaTV43d';
-const IMS_TOKEN_ENDPOINT = 'https://ims-na1.adobelogin.com/ims/token/v3';
+const AUTH_ENDPOINT = 'https://hook.fusion.adobe.com/13cvqi354kot1fo54g7xwkr0079fj0js';
 
-// Store access token
 let accessToken = null;
-let userProvidedToken = false; // Flag to track if user manually entered a token
 
-/**
- * Request an access token from Adobe IMS using client credentials
- * @returns {Promise<string>} The access token
- */
 async function requestAccessToken() {
-  console.log('Requesting access token from Adobe IMS...');
+  console.log('Requesting access token...');
+  const response = await fetch(AUTH_ENDPOINT);
 
-  const params = new URLSearchParams();
-  params.append('grant_type', 'client_credentials');
-  params.append('client_id', IMS_CLIENT_ID);
-  params.append('client_secret', IMS_CLIENT_SECRET);
-  params.append('scope', 'openid,AdobeID,additional_info.projectedProductContext');
-
-  try {
-    const response = await fetch(IMS_TOKEN_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: params.toString(),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Token request failed:', response.status, errorText);
-      throw new Error(`Failed to get access token: ${response.status} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    console.log('Access token received successfully');
-    console.log('Token expires in:', data.expires_in, 'seconds');
-
-    return data.access_token;
-  } catch (error) {
-    console.error('Error requesting access token:', error);
-    throw error;
+  if (!response.ok) {
+    throw new Error(`Authentication failed: ${response.status}`);
   }
+
+  const data = await response.json();
+  console.log('Access token received, expires in:', data.expires_in, 'seconds');
+  return data.access_token;
 }
 
-/**
- * Ensure we have a valid access token
- * Requests a new token if none exists
- * Does NOT overwrite user-provided tokens
- */
 async function ensureAccessToken() {
-  // If user manually entered a token, always use that
-  if (userProvidedToken && accessToken) {
-    console.log('Using user-provided token');
-    return accessToken;
-  }
-
-  if (!accessToken) {
-    accessToken = await requestAccessToken();
-  }
+  if (accessToken) return accessToken;
+  accessToken = await requestAccessToken();
   return accessToken;
 }
 
@@ -593,57 +545,23 @@ async function handlePasteSubmit(form) {
   }
 }
 
-// Token Modal functions
-function openTokenModal() {
-  const modal = document.getElementById('token-modal');
-  if (modal) {
-    modal.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-    // Reset form
-    const form = modal.querySelector('form');
-    if (form) form.reset();
-    // Focus the input
-    const input = modal.querySelector('textarea');
-    if (input) input.focus();
-  }
-}
+async function handleAuthenticate(btn) {
+  const btnText = btn.querySelector('span');
+  const origText = btnText.textContent;
+  btnText.textContent = 'Authenticating...';
+  btn.disabled = true;
 
-function closeTokenModal() {
-  const modal = document.getElementById('token-modal');
-  if (modal) {
-    modal.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
-}
-
-async function handleTokenSubmit(form) {
-  const tokenInput = form.querySelector('#bearer-token');
-  const token = tokenInput.value.trim();
-
-  if (!token) {
-    alert('Please enter a bearer token');
-    return;
-  }
-
-  // Remove "Bearer " prefix if present
-  accessToken = token.replace(/^Bearer\s+/i, '');
-  userProvidedToken = true; // Mark that user manually entered this token
-
-  // Save to sessionStorage for persistence
   try {
-    sessionStorage.setItem('aco_access_token', accessToken);
-    console.log('Token saved to sessionStorage');
-  } catch (e) {
-    console.warn('Could not save token to sessionStorage:', e);
+    accessToken = await requestAccessToken();
+    btnText.textContent = 'Authenticated';
+    await loadProducts();
+  } catch (error) {
+    console.error('Authentication failed:', error);
+    btnText.textContent = origText;
+    alert('Authentication failed. Please try again.');
+  } finally {
+    btn.disabled = false;
   }
-
-  console.log('Token updated successfully (user-provided)');
-  console.log('New access token:', accessToken.substring(0, 50) + '...');
-
-  closeTokenModal();
-
-  // Show success message
-  alert('Token saved successfully! This token will be used for all API calls.');
 }
 
 // Edit Modal functions
@@ -1279,106 +1197,6 @@ function createPasteModal() {
   return modal;
 }
 
-function createTokenModal() {
-  const modal = document.createElement('div');
-  modal.id = 'token-modal';
-  modal.className = 'plp-modal';
-
-  const overlay = document.createElement('div');
-  overlay.className = 'plp-modal-overlay';
-  overlay.addEventListener('click', closeTokenModal);
-
-  const dialog = document.createElement('div');
-  dialog.className = 'plp-modal-dialog plp-modal-dialog-small';
-  dialog.setAttribute('role', 'dialog');
-  dialog.setAttribute('aria-modal', 'true');
-  dialog.setAttribute('aria-labelledby', 'token-modal-title');
-
-  // Header
-  const header = document.createElement('div');
-  header.className = 'plp-modal-header';
-
-  const title = document.createElement('h2');
-  title.id = 'token-modal-title';
-  title.className = 'plp-modal-title';
-  title.textContent = 'Enter Bearer Token';
-
-  const closeBtn = document.createElement('button');
-  closeBtn.className = 'plp-modal-close';
-  closeBtn.setAttribute('aria-label', 'Close modal');
-  closeBtn.appendChild(createIcon('close'));
-  closeBtn.addEventListener('click', closeTokenModal);
-
-  header.appendChild(title);
-  header.appendChild(closeBtn);
-
-  // Body
-  const body = document.createElement('div');
-  body.className = 'plp-modal-body';
-
-  // Form
-  const form = document.createElement('form');
-  form.className = 'plp-modal-form';
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    await handleTokenSubmit(form);
-  });
-
-  // Token field
-  const tokenGroup = document.createElement('div');
-  tokenGroup.className = 'plp-form-group';
-
-  const tokenLabel = document.createElement('label');
-  tokenLabel.className = 'plp-form-label';
-  tokenLabel.setAttribute('for', 'bearer-token');
-  tokenLabel.textContent = 'Bearer Token';
-
-  const tokenHelp = document.createElement('p');
-  tokenHelp.className = 'plp-form-help';
-  tokenHelp.textContent = 'Paste your Adobe IMS access token below. The "Bearer " prefix is optional.';
-
-  const tokenInput = document.createElement('textarea');
-  tokenInput.id = 'bearer-token';
-  tokenInput.className = 'plp-form-input plp-form-textarea';
-  tokenInput.placeholder = 'eyJhbGciOiJSUzI1NiIsIng1dSI6...';
-  tokenInput.required = true;
-  tokenInput.rows = 6;
-
-  tokenGroup.appendChild(tokenLabel);
-  tokenGroup.appendChild(tokenHelp);
-  tokenGroup.appendChild(tokenInput);
-
-  form.appendChild(tokenGroup);
-
-  // Footer
-  const footer = document.createElement('div');
-  footer.className = 'plp-modal-footer';
-
-  const cancelBtn = document.createElement('button');
-  cancelBtn.type = 'button';
-  cancelBtn.className = 'plp-button plp-button-secondary';
-  cancelBtn.textContent = 'Cancel';
-  cancelBtn.addEventListener('click', closeTokenModal);
-
-  const submitBtn = document.createElement('button');
-  submitBtn.type = 'submit';
-  submitBtn.className = 'plp-button';
-  submitBtn.textContent = 'Save Token';
-
-  footer.appendChild(cancelBtn);
-  footer.appendChild(submitBtn);
-
-  form.appendChild(footer);
-  body.appendChild(form);
-
-  dialog.appendChild(header);
-  dialog.appendChild(body);
-
-  modal.appendChild(overlay);
-  modal.appendChild(dialog);
-
-  return modal;
-}
 
 function createEditModal() {
   const modal = document.createElement('div');
@@ -2511,14 +2329,14 @@ function renderHeader(container) {
   const headerButtons = document.createElement('div');
   headerButtons.className = 'plp-header-buttons';
 
-  // Enter Token button
+  // Authenticate button
   const tokenBtn = document.createElement('button');
   tokenBtn.className = 'plp-button plp-button-secondary plp-token-btn';
   tokenBtn.appendChild(createIcon('key'));
   const tokenBtnText = document.createElement('span');
-  tokenBtnText.textContent = 'Enter a Token';
+  tokenBtnText.textContent = 'Authenticate';
   tokenBtn.appendChild(tokenBtnText);
-  tokenBtn.addEventListener('click', openTokenModal);
+  tokenBtn.addEventListener('click', () => handleAuthenticate(tokenBtn));
 
   // Paste a Product button
   const pasteBtn = document.createElement('button');
@@ -2782,33 +2600,10 @@ function renderProductListPage(container) {
   console.log('DA SDK Context:', context);
 
   // Check sessionStorage for saved token first
-  try {
-    const savedToken = sessionStorage.getItem('aco_access_token');
-    if (savedToken) {
-      accessToken = savedToken;
-      userProvidedToken = true;
-      console.log('Using token from sessionStorage');
-      console.log('Stored access token:', accessToken.substring(0, 50) + '...');
-    }
-  } catch (e) {
-    console.warn('Could not read token from sessionStorage:', e);
-  }
-
-  // If no saved token, try DA SDK or IMS
-  if (!accessToken) {
-    console.log('DA SDK token provided:', !!token);
-    if (token) {
-      accessToken = token;
-      console.log('Using DA SDK token');
-    } else {
-      console.log('No DA SDK token, requesting from Adobe IMS...');
-      try {
-        accessToken = await requestAccessToken();
-        console.log('Using IMS access token');
-      } catch (error) {
-        console.error('Failed to get access token:', error);
-      }
-    }
+  // Use DA SDK token if available
+  if (token) {
+    accessToken = token;
+    console.log('Using DA SDK token');
   }
   console.log('Access token available:', !!accessToken);
 
@@ -2829,9 +2624,6 @@ function renderProductListPage(container) {
   // Add modals to the page
   const addModal = createModal();
   document.body.appendChild(addModal);
-
-  const tokenModal = createTokenModal();
-  document.body.appendChild(tokenModal);
 
   const pasteModal = createPasteModal();
   document.body.appendChild(pasteModal);
