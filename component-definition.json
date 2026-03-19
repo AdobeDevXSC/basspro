@@ -254,12 +254,8 @@
                   "selector": "div:nth-child(2)>div>h1>picture>img[alt]"
                 },
                 {
-                  "name": "ctaHref",
-                  "selector": "div:nth-child(3)>div>a[href]"
-                },
-                {
-                  "name": "ctaText",
-                  "selector": "div:nth-child(3)>div>a"
+                  "name": "text",
+                  "selector": "div:nth-child(3)>div"
                 }
               ]
             }
