@@ -458,18 +458,11 @@
         "value": ""
       },
       {
-        "component": "text",
+        "component": "richtext",
         "valueType": "string",
-        "name": "ctaHref",
-        "label": "CTA Link URL",
+        "name": "text",
+        "label": "",
         "value": ""
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "ctaText",
-        "label": "CTA Link Text",
-        "value": "Shop Now"
       }
     ]
   },
