@@ -88,18 +88,19 @@
   --spacing-huge: 120px;
   --spacing-xhuge: 144px;
   --spacing-xxhuge: 192px;
-  --type-base-font-family: adobe-clean, roboto, roboto-fallback, system-ui, sans-serif;
-  --type-display-1-font: normal normal 300 6rem/7.2rem var(--type-base-font-family);
+  --type-base-font-family: "Montserrat", sans-serif;
+  --type-display-font-family: "Bebas Neue", sans-serif;
+  --type-display-1-font: normal normal 400 6rem/7.2rem var(--type-display-font-family);
   --type-display-1-letter-spacing: 0.04em;
-  --type-display-2-font: normal normal 300 4.8rem/5.6rem var(--type-base-font-family);
+  --type-display-2-font: normal normal 400 4.8rem/5.6rem var(--type-display-font-family);
   --type-display-2-letter-spacing: 0.04em;
-  --type-display-3-font: normal normal 300 3.4rem/4rem var(--type-base-font-family);
+  --type-display-3-font: normal normal 400 3.4rem/4rem var(--type-display-font-family);
   --type-display-3-letter-spacing: 0.04em;
-  --type-headline-1-font: normal normal 400 2.4rem/3.2rem var(--type-base-font-family);
+  --type-headline-1-font: normal normal 400 2.4rem/3.2rem var(--type-display-font-family);
   --type-headline-1-letter-spacing: 0.04em;
-  --type-headline-2-default-font: normal normal 300 2rem/2.4rem var(--type-base-font-family);
+  --type-headline-2-default-font: normal normal 400 2rem/2.4rem var(--type-display-font-family);
   --type-headline-2-default-letter-spacing: 0.04em;
-  --type-headline-2-strong-font: normal normal 700 2rem/2.4rem var(--type-base-font-family);
+  --type-headline-2-strong-font: normal normal 400 2rem/2.4rem var(--type-display-font-family);
   --type-headline-2-strong-letter-spacing: 0.04em;
   --type-body-1-default-font: normal normal 300 1.6rem/2.4rem var(--type-base-font-family);
   --type-body-1-default-letter-spacing: 0.04em;
@@ -130,11 +131,11 @@
   --nav-height: 6.4rem;
 }
 
-/* fallback font */
+/* fallback fonts */
 @font-face {
-  font-family: adobe-clean;
-  size-adjust: 100%;
-  src: local("Helvetica");
+  font-family: montserrat-fallback;
+  size-adjust: 113%;
+  src: local("Arial");
 }
 
 html, body {
@@ -304,8 +305,9 @@ button.button {
   line-height: 1.25;
   text-align: center;
   text-decoration: none;
-  background-color: var(--color-brand-500);
-  color: var(--color-neutral-50);
+  background-color: #fff;
+  color: #000;
+  border-color: #000;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -316,7 +318,8 @@ main a.button:hover,
 main a.button:focus,
 button.button:hover,
 button.button:focus {
-  background-color: var(--color-brand-600);
+  background-color: #000;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -396,6 +399,15 @@ main > .section:first-of-type {
   margin-top: 0;
 }
 
+main > .section.full-width {
+  margin-inline: 0;
+}
+
+main > .section.full-width > div {
+  max-width: unset;
+  padding: 0;
+}
+
 @media (min-width: 900px) {
   main > .section > div {
     padding: 0 var(--spacing-big);
@@ -408,6 +420,52 @@ main .section.highlight {
   background-color: var(--color-neutral-100);
   margin: 0;
   padding: var(--spacing-xbig) 0;
+}
+
+main .section.dark-red,
+main .section.dark-blue {
+  margin: 0;
+  padding: 12px 0;
+}
+
+main .section.dark-red > div,
+main .section.dark-blue > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+main .section.dark-red > div h2,
+main .section.dark-blue > div h2 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+main .section.dark-red > div p,
+main .section.dark-blue > div p {
+  margin: 0;
+}
+
+main .section.dark-red > div a.button,
+main .section.dark-blue > div a.button {
+  margin: 0;
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+  padding: 6px 24px;
+  font-size: 1.2rem;
+}
+
+main .section.dark-red {
+  background-color: #8b1a1a;
+  color: #fff;
+}
+
+main .section.dark-blue {
+  background-color: #0a1a2f;
+  color: #fff;
 }
 
 main .section[data-padding="default"] {

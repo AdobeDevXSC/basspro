@@ -1,37 +1,119 @@
-.hero-container .hero-wrapper {
-  max-width: unset;
-  padding: 0;
-}
-
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  aspect-ratio: 2880 / 750;
+  padding: 24px;
+  overflow: hidden;
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
-}
-
-.hero picture {
+/* background image */
+.hero > div:first-child {
   position: absolute;
-  z-index: -1;
   inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+  z-index: 0;
 }
 
-.hero img {
-  object-fit: cover;
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+/* overlay content (logo + button) */
+.hero > div:nth-child(2),
+.hero > div:nth-child(3) {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+/* logo / heading image */
+.hero h1 {
+  margin: 0;
+  line-height: 0;
+}
+
+.hero h1 picture {
+  display: block;
+}
+
+.hero h1 img {
+  width: min(100%, 240px);
+  height: auto;
+  object-fit: contain;
+}
+
+/* CTA button — centered under the logo image */
+.hero > div:nth-child(3) {
+  max-width: none;
+  width: min(100%, 240px);
+  text-align: center;
+}
+
+.hero .button-container {
+  margin-top: 16px;
+}
+
+.hero .button-container p {
+  margin: 0;
+}
+
+.hero .button {
+  display: inline-block;
+  padding: 10px 32px;
+  border: 2px solid #fff;
+  background: #fff;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.hero .button:hover {
+  background: transparent;
+  color: #fff;
+}
+
+@media (min-width: 600px) {
+  .hero {
+    padding: 32px;
+  }
+
+  .hero h1 img {
+    width: min(100%, 320px);
+  }
+
+  .hero > div:nth-child(3) {
+    width: min(100%, 320px);
+  }
 }
 
 @media (min-width: 900px) {
   .hero {
-    padding: 40px 32px;
+    padding: 40px 48px;
+  }
+
+  .hero h1 img {
+    width: min(100%, 400px);
+  }
+
+  .hero > div:nth-child(3) {
+    width: min(100%, 400px);
+  }
+
+  .hero .button {
+    font-size: 16px;
+    padding: 12px 40px;
   }
 }
