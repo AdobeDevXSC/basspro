@@ -58,7 +58,7 @@
           "component": "richtext",
           "valueType": "string",
           "name": "text",
-          "label": "",
+          "label": "CTA",
           "value": ""
         }
       ]
