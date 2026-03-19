@@ -1,13 +1,46 @@
-import { IS_UE } from '../../scripts/commerce.js';
+import { moveInstrumentation } from '../../scripts/ue-utils.js';
+
+/**
+ * Normalizes UE cell structure to match the expected doc-based structure.
+ * UE structure: cell > picture, div.richtext (direct children)
+ * Normal structure: cell > p (picture), p (text), p (button) — no changes needed
+ */
+function normalizeCellStructure(cell) {
+  const hasUEPicture = cell.querySelector(':scope > picture');
+  const hasUERichtext = cell.querySelector(':scope > div.richtext');
+
+  if (!hasUEPicture && !hasUERichtext) {
+    return; // normal structure — leave as-is
+  }
+
+  if (hasUEPicture) {
+    const wrapper = document.createElement('p');
+    hasUEPicture.parentNode.insertBefore(wrapper, hasUEPicture);
+    wrapper.appendChild(hasUEPicture);
+  }
+
+  if (hasUERichtext) {
+    const firstChild = hasUERichtext.firstChild;
+    while (hasUERichtext.firstChild) {
+      cell.appendChild(hasUERichtext.firstChild);
+    }
+    if (firstChild && firstChild.nodeType === Node.ELEMENT_NODE) {
+      moveInstrumentation(hasUERichtext, firstChild);
+    }
+    hasUERichtext.remove();
+  }
+}
 
 export default function decorate(block) {
   const rows = [...block.children];
   const contentRow = rows[0];
   const cols = [...contentRow.children];
   block.classList.add(`columns-${cols.length}-cols`);
-  if (IS_UE) {
-    block.classList.add('columns-ue');
-  }
+
+  // normalize UE structure when present; normal doc structure is unchanged
+  rows.forEach((row) => {
+    [...row.children].forEach((cell) => normalizeCellStructure(cell));
+  });
 
   // check if the last row is a style metadata row
   const lastRow = rows[rows.length - 1];
@@ -19,7 +52,7 @@ export default function decorate(block) {
     });
 
     if (isStyleRow) {
-      lastRow.classList.add('columns-style-row');
+      lastRow.style.display = 'none';
       lastRowCells.forEach((cell, i) => {
         const style = cell.textContent.trim();
         if (style && contentRow.children[i]) {
