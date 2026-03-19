@@ -1,33 +1,190 @@
 .columns > div {
   display: flex;
   flex-direction: column;
-}
-
-.columns img {
-  width: 100%;
-}
-
-.columns > div > div {
-  order: 1;
-}
-
-.columns > div > .columns-img-col {
-  order: 0;
-}
-
-.columns > div > .columns-img-col img {
-  display: block;
+  gap: 16px;
 }
 
 @media (min-width: 900px) {
   .columns > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+    flex-direction: row;
+    gap: 16px;
   }
 
   .columns > div > div {
     flex: 1;
-    order: unset;
+  }
+}
+
+/* each column cell — card with background image */
+.columns > div > div {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* first <p> holds the background image */
+.columns > div > div > p:first-child {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  z-index: 0;
+}
+
+.columns > div > div > p:first-child picture,
+.columns > div > div > p:first-child img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* all content after the background image */
+.columns > div > div > p:not(:first-child) {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.columns > div > div > p:nth-child(2) {
+  padding-top: 20px;
+}
+
+.columns > div > div > p:last-child {
+  padding-bottom: 20px;
+}
+
+/* inline images within overlay text (logos) */
+.columns > div > div > p:not(:first-child) picture {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.columns > div > div > p:not(:first-child) img {
+  max-width: 240px;
+  height: auto;
+}
+
+/* text styling */
+.columns > div > div > p:not(:first-child) {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* links styled as buttons */
+.columns > div > div a {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 28px;
+  border: 2px solid #fff;
+  background: #fff;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.columns > div > div a:hover {
+  background: transparent;
+  color: #fff;
+}
+
+/* button-container resets */
+.columns .button-container {
+  margin: 0;
+}
+
+.columns .button-container .button {
+  margin-top: 12px;
+  padding: 10px 28px;
+  border: 2px solid #fff;
+  background: #fff;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.columns .button-container .button:hover {
+  background: transparent;
+  color: #fff;
+}
+
+/* "stripes" variant — alternating red / navy / red bands */
+.columns > div > div.stripes {
+  aspect-ratio: 1 / 1;
+  min-height: unset;
+}
+
+.columns > div > div.stripes > p:not(:first-child) {
+  z-index: 1;
+  text-align: center;
+  padding: 12px 24px;
+  margin: 0;
+}
+
+/* heading stripe — red */
+.columns > div > div.stripes > p:nth-child(2) {
+  background: #c00;
+  font-size: 28px;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/* description stripe — dark navy */
+.columns > div > div.stripes > p:nth-child(3) {
+  background: #1b2a4a;
+  font-weight: 400;
+  font-size: 14px;
+  font-style: italic;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+/* button stripe — red */
+.columns > div > div.stripes > p:last-child {
+  background: #c00;
+  padding-top: 14px;
+  padding-bottom: 18px;
+}
+
+.columns > div > div.stripes a {
+  border: 2px solid #000;
+  background: #fff;
+  color: #000;
+}
+
+.columns > div > div.stripes a:hover {
+  background: #000;
+  color: #fff;
+}
+
+@media (min-width: 600px) {
+  .columns > div > div {
+    min-height: 350px;
+  }
+}
+
+@media (min-width: 900px) {
+  .columns > div > div {
+    min-height: 400px;
+  }
+
+  .columns > div > div > p:not(:first-child) img {
+    max-width: 280px;
   }
 }
