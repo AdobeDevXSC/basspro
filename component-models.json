@@ -62,6 +62,18 @@
         "label": "Style",
         "options": [
           {
+            "name": "Dark Blue",
+            "value": "dark-blue"
+          },
+          {
+            "name": "Dark Red",
+            "value": "dark-red"
+          },
+          {
+            "name": "Full Width",
+            "value": "full-width"
+          },
+          {
             "name": "Highlight",
             "value": "highlight"
           }
