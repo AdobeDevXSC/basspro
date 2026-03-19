@@ -1,8 +1,13 @@
+import { IS_UE } from '../../scripts/commerce.js';
+
 export default function decorate(block) {
   const rows = [...block.children];
   const contentRow = rows[0];
   const cols = [...contentRow.children];
   block.classList.add(`columns-${cols.length}-cols`);
+  if (IS_UE) {
+    block.classList.add('columns-ue');
+  }
 
   // check if the last row is a style metadata row
   const lastRow = rows[rows.length - 1];
@@ -14,7 +19,7 @@ export default function decorate(block) {
     });
 
     if (isStyleRow) {
-      lastRow.style.display = 'none';
+      lastRow.classList.add('columns-style-row');
       lastRowCells.forEach((cell, i) => {
         const style = cell.textContent.trim();
         if (style && contentRow.children[i]) {
