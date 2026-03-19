@@ -4,6 +4,24 @@
   gap: 16px;
 }
 
+/* style row — hidden by default, visible in Universal Editor for authoring */
+.columns-style-row {
+  display: none;
+  padding: 8px 0;
+  font-size: 12px;
+  color: #666;
+  border-top: 1px solid #eee;
+  margin-top: 8px;
+}
+
+.columns-ue .columns-style-row {
+  display: flex;
+}
+
+.columns-style-row > div {
+  flex: 1;
+}
+
 @media (min-width: 900px) {
   .columns > div {
     flex-direction: row;

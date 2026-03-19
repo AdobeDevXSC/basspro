@@ -229,22 +229,33 @@
           "title": "Hero",
           "id": "hero",
           "model": "hero",
+          "filter": "hero",
           "plugins": {
             "da": {
+              "name": "hero",
+              "unsafeHTML": "<div class=\"hero\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\" alt=\"\"></picture></div></div><div><div><h1><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\" alt=\"\"></picture></h1></div></div><div><div><a href=\"\">Shop Now</a></div></div></div>",
               "rows": 1,
-              "columns": 1,
+              "columns": 3,
               "fields": [
                 {
-                  "name": "image",
-                  "selector": "div>div>picture>img[src]"
+                  "name": "backgroundImage",
+                  "selector": "div:nth-child(1)>div>picture>img[src]"
                 },
                 {
-                  "name": "alt",
-                  "selector": "div>div>picture>img[alt]"
+                  "name": "backgroundImageAlt",
+                  "selector": "div:nth-child(1)>div>picture>img[alt]"
+                },
+                {
+                  "name": "logoImage",
+                  "selector": "div:nth-child(2)>div>h1>picture>img[src]"
+                },
+                {
+                  "name": "logoAlt",
+                  "selector": "div:nth-child(2)>div>h1>picture>img[alt]"
                 },
                 {
                   "name": "text",
-                  "selector": "div>div>h1"
+                  "selector": "div:nth-child(3)>div"
                 }
               ]
             }

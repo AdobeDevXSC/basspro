@@ -62,6 +62,18 @@
         "label": "Style",
         "options": [
           {
+            "name": "Dark Blue",
+            "value": "dark-blue"
+          },
+          {
+            "name": "Dark Red",
+            "value": "dark-red"
+          },
+          {
+            "name": "Full Width",
+            "value": "full-width"
+          },
+          {
             "name": "Highlight",
             "value": "highlight"
           }
@@ -432,23 +444,37 @@
       {
         "component": "reference",
         "valueType": "string",
-        "name": "image",
-        "label": "Image",
+        "name": "backgroundImage",
+        "label": "Background Image",
         "multi": false
       },
       {
         "component": "text",
         "valueType": "string",
-        "name": "alt",
-        "label": "Alt",
+        "name": "backgroundImageAlt",
+        "label": "Background Image Alt",
         "value": ""
       },
       {
+        "component": "reference",
+        "valueType": "string",
+        "name": "logoImage",
+        "label": "Logo Image",
+        "multi": false
+      },
+      {
         "component": "text",
+        "valueType": "string",
+        "name": "logoAlt",
+        "label": "Logo Alt",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
         "name": "text",
-        "value": "",
-        "label": "Text",
-        "valueType": "string"
+        "label": "CTA",
+        "value": ""
       }
     ]
   },
