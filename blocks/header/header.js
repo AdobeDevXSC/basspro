@@ -187,6 +187,138 @@ export default async function decorate(block) {
   }
 
   const navSections = nav.querySelector('.nav-sections');
+
+  // Megamenu panel
+  const megamenuPanel = document.createElement('div');
+  megamenuPanel.className = 'megamenu-panel';
+  megamenuPanel.style.display = 'none';
+  nav.appendChild(megamenuPanel);
+
+  const megamenuCache = {};
+  let activeMegamenu = null;
+
+  function closeMegamenu() {
+    megamenuPanel.style.display = 'none';
+    megamenuPanel.innerHTML = '';
+    overlay.classList.remove('show');
+    activeMegamenu = null;
+    if (navSections) {
+      navSections.querySelectorAll(':scope .default-content-wrapper > ul > li')
+        .forEach((li) => li.classList.remove('megamenu-active'));
+    }
+  }
+
+  function buildMegamenuDOM(html) {
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'megamenu-wrapper';
+
+    const contentDiv = temp.querySelector('div');
+    const promoDiv = temp.querySelectorAll('div')[1];
+
+    // Extract title from h2
+    const h2 = contentDiv?.querySelector('h2');
+    if (h2) {
+      const title = document.createElement('h2');
+      title.className = 'megamenu-title';
+      title.textContent = h2.textContent;
+      wrapper.appendChild(title);
+    }
+
+    const body = document.createElement('div');
+    body.className = 'megamenu-body';
+
+    // Build category groups from <p><strong> + <ul> pairs
+    const categoriesGrid = document.createElement('div');
+    categoriesGrid.className = 'megamenu-categories';
+
+    const children = contentDiv ? [...contentDiv.children] : [];
+    let i = 0;
+    // Skip h2
+    if (children[i]?.tagName === 'H2') i += 1;
+
+    while (i < children.length) {
+      const el = children[i];
+      if (el.tagName === 'P' && el.querySelector('strong')) {
+        const group = document.createElement('div');
+        group.className = 'megamenu-category';
+
+        const heading = document.createElement('h3');
+        heading.textContent = el.textContent;
+        group.appendChild(heading);
+
+        // Check if next sibling is a <ul>
+        if (children[i + 1]?.tagName === 'UL') {
+          i += 1;
+          group.appendChild(children[i].cloneNode(true));
+        }
+
+        categoriesGrid.appendChild(group);
+      }
+      i += 1;
+    }
+
+    body.appendChild(categoriesGrid);
+
+    // Promo sidebar from second div (picture + optional content)
+    if (promoDiv) {
+      const sidebar = document.createElement('div');
+      sidebar.className = 'megamenu-sidebar';
+      sidebar.innerHTML = promoDiv.innerHTML;
+      body.appendChild(sidebar);
+    }
+
+    wrapper.appendChild(body);
+    return wrapper;
+  }
+
+  async function openMegamenu(navItem) {
+    const linkEl = navItem.querySelector('a');
+    const label = (linkEl?.textContent || navItem.textContent).trim();
+    const slug = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    if (activeMegamenu === slug) {
+      closeMegamenu();
+      return;
+    }
+
+    // Fetch and build panel content
+    if (!megamenuCache[slug]) {
+      try {
+        const resp = await fetch(`/navpanels/${slug}.plain.html`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const html = await resp.text();
+        const trimmed = html.replace(/<div><\/div>/g, '').trim();
+        if (!trimmed) throw new Error('Empty content');
+        megamenuCache[slug] = buildMegamenuDOM(trimmed);
+      } catch {
+        megamenuCache[slug] = null;
+      }
+    }
+
+    if (!megamenuCache[slug]) {
+      closeMegamenu();
+      // eslint-disable-next-line no-alert
+      alert(`No megamenu panel found for "${label}"`);
+      return;
+    }
+
+    // Show panel
+    toggleAllNavSections(navSections);
+    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li')
+      .forEach((li) => li.classList.remove('megamenu-active'));
+    navItem.classList.add('megamenu-active');
+
+    megamenuPanel.innerHTML = '';
+    megamenuPanel.appendChild(megamenuCache[slug].cloneNode(true));
+    megamenuPanel.style.display = 'block';
+    overlay.classList.add('show');
+    activeMegamenu = slug;
+  }
+
+  overlay.addEventListener('click', closeMegamenu);
+
   if (navSections) {
     navSections
       .querySelectorAll(':scope .default-content-wrapper > ul > li')
@@ -199,18 +331,44 @@ export default async function decorate(block) {
             navSection.classList.toggle('active');
           }
         });
-        navSection.addEventListener('mouseenter', () => {
-          toggleAllNavSections(navSections);
+        navSection.addEventListener('click', (e) => {
           if (isDesktop.matches) {
-            if (!navSection.classList.contains('nav-drop')) {
-              overlay.classList.remove('show');
-              return;
-            }
-            navSection.setAttribute('aria-expanded', 'true');
-            overlay.classList.add('show');
+            e.preventDefault();
+            e.stopPropagation();
+            openMegamenu(navSection);
           }
         });
       });
+
+    // Close megamenu when mouse leaves both nav items and the panel
+    let closeTimer = null;
+
+    function scheduleMegamenuClose() {
+      closeTimer = setTimeout(() => {
+        closeMegamenu();
+      }, 150);
+    }
+
+    function cancelMegamenuClose() {
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+    }
+
+    navSections.addEventListener('mouseleave', (e) => {
+      if (isDesktop.matches && activeMegamenu && !megamenuPanel.contains(e.relatedTarget)) {
+        scheduleMegamenuClose();
+      }
+    });
+
+    megamenuPanel.addEventListener('mouseenter', () => {
+      cancelMegamenuClose();
+    });
+
+    megamenuPanel.addEventListener('mouseleave', () => {
+      if (isDesktop.matches && activeMegamenu) scheduleMegamenuClose();
+    });
   }
 
   const navTools = nav.querySelector('.nav-tools');
@@ -342,7 +500,9 @@ export default async function decorate(block) {
   <div class="search-wrapper nav-tools-wrapper">
     <button type="button" class="nav-search-button">Search</button>
     <div class="nav-search-input nav-search-panel nav-tools-panel">
-      <form id="search-bar-form"></form>
+      <form id="search-bar-form">
+        <input type="search" name="search" placeholder="What can we help you find?" autocomplete="off" />
+      </form>
       <div class="search-bar-result" style="display: none;"></div>
     </div>
   </div>
@@ -459,6 +619,18 @@ export default async function decorate(block) {
   }
 
   searchButton.addEventListener('click', () => toggleSearch(!searchPanel.classList.contains('nav-tools-panel--show')));
+
+  // On desktop, initialize search dropin when the static input is focused
+  let searchInitialized = false;
+  const staticInput = searchForm.querySelector('input');
+  if (staticInput) {
+    staticInput.addEventListener('focus', () => {
+      if (!searchInitialized && isDesktop.matches) {
+        searchInitialized = true;
+        toggleSearch(true);
+      }
+    });
+  }
 
   navTools.querySelector('.nav-search-button').addEventListener('click', () => {
     if (isDesktop.matches) {

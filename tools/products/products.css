@@ -1063,6 +1063,13 @@ body {
   line-height: 1.4;
 }
 
+.plp-form-error {
+  font-size: var(--spectrum-global-dimension-font-size-75);
+  color: var(--spectrum-red-500);
+  margin: var(--spectrum-global-dimension-size-100) 0 0;
+  line-height: 1.4;
+}
+
 /* Form Sections */
 .plp-form-section {
   margin-bottom: var(--spectrum-global-dimension-size-300);
