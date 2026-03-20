@@ -22,6 +22,8 @@ import { fetchPlaceholders, getProductLink } from '../../scripts/commerce.js';
 import '../../scripts/initializers/search.js';
 import '../../scripts/initializers/wishlist.js';
 
+const FALLBACK_IMAGE = '/media/media_13cbe09de7657f35c6a24033b71b00c1e0f08797c.jpg';
+
 export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
@@ -47,6 +49,33 @@ export default async function decorate(block) {
 
   block.innerHTML = '';
   block.appendChild(fragment);
+
+  function addFallback(img) {
+    if (img.dataset.fallback) return;
+    img.addEventListener('error', () => {
+      if (!img.dataset.fallback) {
+        img.dataset.fallback = 'true';
+        img.src = FALLBACK_IMAGE;
+        img.srcset = FALLBACK_IMAGE;
+        console.log('fallback', img);
+      }
+    });
+    if (img.complete && img.naturalWidth === 0) {
+      img.dataset.fallback = 'true';
+      img.src = FALLBACK_IMAGE;
+      img.srcset = FALLBACK_IMAGE;
+    }
+  }
+
+  new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType !== 1) continue;
+        if (node.tagName === 'IMG') addFallback(node);
+        else node.querySelectorAll?.('img').forEach(addFallback);
+      }
+    }
+  }).observe($productList, { childList: true, subtree: true });
 
   // Add url path back to the block for enrichment, incase enrichment block is
   // executed after the plp block and block config is not available

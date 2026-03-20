@@ -247,6 +247,8 @@ header nav .nav-sections ul>li:empty {
 
   header nav .nav-sections ul {
     display: flex;
+    justify-content: center;
+    gap: 28px;
     margin: 0;
     padding: 10px 0;
   }
@@ -849,8 +851,7 @@ header .nav-search-input .search_autocomplete .popover-container {
 }
 
 .megamenu-wrapper {
-  max-width: 1264px;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
 }
 
@@ -861,7 +862,7 @@ header .nav-search-input .search_autocomplete .popover-container {
   font-weight: 400;
   text-transform: uppercase;
   margin: 0;
-  padding: 16px 32px;
+  padding: 16px 48px;
   border-bottom: 1px solid #e5e5e5;
   color: #1a1a1a;
 }
@@ -869,8 +870,8 @@ header .nav-search-input .search_autocomplete .popover-container {
 /* Body: categories grid + sidebar */
 .megamenu-body {
   display: grid;
-  grid-template-columns: 1fr 240px;
-  min-height: 320px;
+  grid-template-columns: 1fr 280px;
+  min-height: 380px;
 }
 
 /* Categories 4-column grid */
@@ -878,12 +879,12 @@ header .nav-search-input .search_autocomplete .popover-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  padding: 20px 32px;
+  padding: 24px 48px;
   align-content: start;
 }
 
 .megamenu-category {
-  padding: 0 8px 20px 0;
+  padding: 0 12px 24px 0;
 }
 
 .megamenu-category h3 {
@@ -916,26 +917,72 @@ header .nav-search-input .search_autocomplete .popover-container {
   color: #111;
 }
 
-/* Sidebar with promo image */
+/* Sidebar with promo image + overlaid text */
 .megamenu-sidebar {
-  background: #f5f5f5;
+  position: relative;
+  overflow: hidden;
+  background: #1a1a1a;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  border-left: 1px solid #e5e5e5;
+}
+
+.megamenu-sidebar > p:has(> picture) {
+  position: absolute;
+  inset: 0;
+  margin: 0;
 }
 
 .megamenu-sidebar picture {
   display: block;
   width: 100%;
-  overflow: hidden;
+  height: 100%;
 }
 
 .megamenu-sidebar img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   object-fit: cover;
+}
+
+.megamenu-sidebar h2 {
+  position: relative;
+  z-index: 1;
+  font-family: var(--type-display-font-family, "Bebas Neue", sans-serif);
+  font-size: 2.4rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
+  margin: 24px 24px 12px;
+  line-height: 1.1;
+}
+
+.megamenu-sidebar > p:not(:has(> picture)) {
+  position: relative;
+  z-index: 1;
+  margin: 0 24px 16px;
+}
+
+.megamenu-sidebar a {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  background: #fff;
+  color: #1a1a1a;
+  padding: 8px 24px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: var(--type-base-font-family, "Montserrat", sans-serif);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+.megamenu-sidebar a:hover {
+  background: transparent;
+  color: #fff;
 }
 
 /* Active nav item highlight */
