@@ -490,6 +490,39 @@
     ]
   },
   {
+    "id": "media-promo-banner",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "alt",
+        "label": "Alt",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "description",
+        "value": "",
+        "label": "Description",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "url",
+        "value": "",
+        "label": "URL Link",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "product-list-page",
     "fields": [
       {
@@ -497,6 +530,18 @@
         "name": "urlpath",
         "label": "URL Path",
         "description": "URL Path of the category as defined in the catalog (not CMS)"
+      },
+      {
+        "component": "boolean",
+        "label": "Zoom Product Image on Hover",
+        "name": "zoom",
+        "valueType": "boolean"
+      },
+      {
+        "component": "boolean",
+        "label": "Product Badges",
+        "name": "badges",
+        "valueType": "boolean"
       }
     ]
   },

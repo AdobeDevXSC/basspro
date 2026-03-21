@@ -24,13 +24,15 @@ import '../../scripts/initializers/wishlist.js';
 
 const FALLBACK_IMAGE = '/media/media_13cbe09de7657f35c6a24033b71b00c1e0f08797c.jpg';
 
-const PLP_PROMOS_JSON = '/fragments/plp-promos/query-index.json';
-const PLP_BANNERS_JSON = '/fragments/plp-banners/query-index.json';
+let useZoomViewer = false;
+let useProductBadges = false;
 
 export default async function decorate(block) {
   const labels = await fetchPlaceholders();
-
   const config = readBlockConfig(block);
+
+  const plpPromosJson = '/fragments/plp-promos/query-index.json';
+  const plpBannersJson = '/fragments/plp-banners/query-index.json';
 
   if (window.location.href.includes('search?q=')) block.classList.add('search');
 
@@ -38,7 +40,7 @@ export default async function decorate(block) {
   let bannersData = [];
 
   try {
-    const res = await fetch(PLP_PROMOS_JSON);
+    const res = await fetch(plpPromosJson);
     const resJson = await res.json();
     promosData = resJson.data || [];
     promosData.sort((a, b) => Number(a.row) - Number(b.row));
@@ -47,7 +49,7 @@ export default async function decorate(block) {
   }
 
   try {
-    const res = await fetch(PLP_BANNERS_JSON);
+    const res = await fetch(plpBannersJson);
     const resJson = await res.json();
     bannersData = resJson.data || [];
   } catch (e) {
@@ -71,6 +73,9 @@ export default async function decorate(block) {
   const $productSort = fragment.querySelector('.search__product-sort');
   const $productList = fragment.querySelector('.search__product-list');
   const $pagination = fragment.querySelector('.search__pagination');
+
+  useZoomViewer = config.zoom || 'false';
+  useProductBadges = config.badges || 'false';
 
   block.innerHTML = '';
   block.appendChild(fragment);
@@ -235,141 +240,205 @@ export default async function decorate(block) {
     })($productList),
   ]);
 
-  // Insert PLP banners (above/below the PLP wrapper)
-  if (bannersData.length > 0) {
-    insertBanner(block, bannersData);
-  }
-
-  // Listen for search results (event is fired before the block is rendered; eager: true)
+  // Listen for search results (before render)
   events.on('search/result', (payload) => {
     const totalCount = payload.result?.totalCount || 0;
-
     block.classList.toggle('product-list-page--empty', totalCount === 0);
 
-    // Results Info
     $resultInfo.innerHTML = payload.request?.phrase
       ? `${totalCount} results found for <strong>"${payload.request.phrase}"</strong>.`
       : `${totalCount} results found.`;
 
-    // Update the view facets button with the number of filters
     if (payload.request?.filter?.length > 0) {
       $viewFacets.querySelector('button').setAttribute('data-count', payload.request.filter.length);
     } else {
       $viewFacets.querySelector('button').removeAttribute('data-count');
     }
 
-    // Insert PLP promos into the product grid
-    if (promosData.length > 0) {
-      waitForGrid(block, () => insertPromo(block, promosData));
-    }
+    // Wait until Drop-ins finish rendering the grid
+    waitForGrid((grid) => {
+      insertPromo(block, promosData);
+    });
   }, { eager: true });
 
-  // Listen for search results (event is fired after the block is rendered; eager: false)
+  // Listen for search results (after render) — handles subsequent searches and updates
   events.on('search/result', (payload) => {
-    // update URL with new search params
+    // insert promo card
+    insertPromo(block, promosData);
+
+    // Update URL
     const url = new URL(window.location.href);
-
-    if (payload.request?.phrase) {
-      url.searchParams.set('q', payload.request.phrase);
-    }
-
-    if (payload.request?.currentPage) {
-      url.searchParams.set('page', payload.request.currentPage);
-    }
-
-    if (payload.request?.sort) {
-      url.searchParams.set('sort', getParamsFromSort(payload.request.sort));
-    }
-
-    if (payload.request?.filter) {
-      url.searchParams.set('filter', getParamsFromFilter(payload.request.filter));
-    }
-
-    // Update the URL
+    if (payload.request?.phrase) url.searchParams.set('q', payload.request.phrase);
+    if (payload.request?.currentPage) url.searchParams.set('page', payload.request.currentPage);
+    if (payload.request?.sort) url.searchParams.set('sort', getParamsFromSort(payload.request.sort));
+    if (payload.request?.filter) url.searchParams.set('filter', getParamsFromFilter(payload.request.filter));
     window.history.pushState({}, '', url.toString());
-
-    // Re-insert PLP promos when grid is re-rendered (pagination, filters, etc.)
-    if (promosData.length > 0) {
-      waitForGrid(block, () => insertPromo(block, promosData));
-    }
   }, { eager: false });
+
+  insertBanner(block, bannersData);
 }
 
-function waitForGrid(block, callback, attempts = 0) {
-  const maxAttempts = 50;
-  const grid = block.querySelector('.product-discovery-product-list__grid');
-  if (grid) {
-    callback();
-  } else if (attempts < maxAttempts) {
-    requestAnimationFrame(() => waitForGrid(block, callback, attempts + 1));
-  }
-}
+function waitForGrid(callback) {
+  const selector = '.product-discovery-product-list__grid';
 
-function getResponsiveSpan(span) {
-  const width = window.innerWidth;
-  if (width >= 1280) return span;
-  if (width >= 1024) return Math.min(span, 3);
-  if (width >= 768) return Math.min(span, 2);
-  return 1;
+  const check = setInterval(() => {
+    const grid = document.querySelector(selector);
+    if (!grid) return;
+
+    // Wait until children are fully rendered
+    if (grid.children.length === 0) return;
+
+    clearInterval(check);
+    callback(grid);
+  }, 100);
 }
 
 function insertPromo(block, promosData) {
-  const grid = block.querySelector('.product-discovery-product-list__grid');
-  if (!grid) return;
-
-  // Remove existing promo cards to avoid duplicates on re-render
-  grid.querySelectorAll('.promo-card').forEach((el) => el.remove());
-
   const currentURL = window.location.pathname;
-  const columns = 4;
+
+  let resultList = block.querySelector('.product-discovery-product-list__grid');
+  if (!resultList) return;
+
+  resultList.querySelectorAll('.dropin-product-item-card.promo-card').forEach((el) => el.remove());
+
+  if (useProductBadges === 'true') {
+    fetch('/extras/badges.json').then((badges) => {
+      badges.json().then((bd) => {
+        resultList.querySelectorAll('.dropin-product-item-card').forEach((el) => {
+          if (el.classList.contains('promo-card')) return;
+          const anchor = el.querySelector('.dropin-product-item-card__title a');
+          const href = anchor?.href;
+          const card = bd.data.find((bdge) => href.includes(bdge.url));
+          if (card) {
+            const badge = document.createElement('div');
+            badge.className = 'dropin-product-item-card__badge';
+            badge.innerHTML = card?.badge;
+            el.append(badge);
+          }
+        });
+      });
+    });
+  }
+
+  if (useZoomViewer === 'true') {
+    resultList.querySelectorAll('.dropin-product-item-card__image').forEach((el) => {
+      el.classList.add('zoom');
+    });
+  }
+
+  // Helper to calculate responsive span
+  function getResponsiveSpan(span) {
+    const width = window.innerWidth;
+
+    if (width >= 1280) {
+      // Large Desktop: 4 columns
+      return span;
+    } else if (width >= 1024) {
+      // Desktop: 3 columns
+      return Math.min(span, 3);
+    } else if (width >= 768) {
+      // Tablet: 2 columns
+      return Math.min(span, 2);
+    } else {
+      // Mobile: 1 column
+      return 1;
+    }
+  }
 
   promosData.forEach((promo) => {
-    if (promo.category !== currentURL) return;
+    const grid = block.querySelector('.product-discovery-product-list__grid');
+    const items = Array.from(grid.children);
 
-    const row = Number(promo.row) || 1;
-    const position = Number(promo.position) || 1;
-    const span = Number(promo.span) || 1;
+    if (currentURL === promo.category) {
+      const fragmentPath = promo.path;
+      const row = parseInt(promo.row, 10) || 1;
+      const position = parseInt(promo.position, 10) || 1;
+      const span = parseInt(promo.span, 10) || 1;
 
-    const items = [...grid.children];
-    const rowStartIndex = (row - 1) * columns;
-    const insertIndex = rowStartIndex + (position - 1);
+      const baseUrl = window.location.origin;
 
-    const card = document.createElement('div');
-    card.className = 'dropin-product-item-card promo-card';
-    card.dataset.originalSpan = span;
-    card.style.gridColumn = `span ${getResponsiveSpan(span)}`;
+      // 4. Convert row & position into grid index
+      // Grid is 4 columns on desktop
+      const columns = 4;
 
-    const fullUrl = new URL(promo.path, window.location.origin).href;
-    card.innerHTML = `<aem-embed url="${fullUrl}"></aem-embed>`;
+      // Row 1 → indices 0–3
+      // Row 2 → indices 4–7
+      // Row N → ((row - 1) * 4)
+      const rowStartIndex = (row - 1) * columns;
 
-    if (insertIndex >= items.length) {
-      grid.appendChild(card);
-    } else {
-      grid.insertBefore(card, items[insertIndex]);
+      // Position is 1-based, so subtract 1
+      const insertIndex = rowStartIndex + (position - 1);
+
+      // Create and insert the promo card
+      const card = document.createElement('div');
+      card.className = 'dropin-product-item-card promo-card';
+
+      // Store original span for resize handling
+      card.dataset.originalSpan = span;
+
+      // Apply responsive span
+      card.style.gridColumn = `span ${getResponsiveSpan(span)}`;
+
+      // Build full fragment URL
+      const fullUrl = `${baseUrl}${fragmentPath}`;
+      card.innerHTML = `
+        <aem-embed url="${fullUrl}"></aem-embed>
+      `;
+
+      // 6. Insert at calculated index
+      if (insertIndex >= items.length) {
+        // Append if index is beyond product count
+        grid.appendChild(card);
+      } else {
+        // Insert before existing item
+        grid.insertBefore(card, items[insertIndex]);
+      }
     }
+  });
+
+  // Update spans on window resize
+  window.addEventListener('resize', () => {
+    resultList.querySelectorAll('.promo-card').forEach(card => {
+      const originalSpan = parseInt(card.dataset.originalSpan, 10);
+      card.style.gridColumn = `span ${getResponsiveSpan(originalSpan)}`;
+    });
   });
 }
 
-function insertBanner(block, bannersData) {
-  const wrapper = block.closest('.product-list-page-wrapper') || block.parentElement;
-  if (!wrapper) return;
-
+function insertBanner(block, data) {
+  const plpWrapper = document.querySelector('.product-list-page-wrapper')
+    || block?.closest('.product-list-page-wrapper')
+    || block?.parentElement;
   const currentURL = window.location.pathname;
 
-  bannersData.forEach((banner) => {
-    if (banner.category !== currentURL) return;
+  if (!plpWrapper) {
+    console.warn("plpWrapper not found — cannot insert banner.");
+    return;
+  }
 
-    const position = parseInt(banner.position, 10) || 1;
-    const fullUrl = new URL(banner.path, window.location.origin).href;
+  data.forEach((banner) => {
+    if (currentURL === banner.category) {
+      const position = parseInt(banner.position, 10) || 1;
+      const fragmentPath = banner.path;
+      const baseUrl = window.location.origin;
 
-    const section = document.createElement('div');
-    section.className = 'plp-banner';
-    section.innerHTML = `<aem-embed url="${fullUrl}"></aem-embed>`;
+      // Build full fragment URL
+      const fullUrl = `${baseUrl}${fragmentPath}`;
 
-    if (position === 1) {
-      wrapper.parentElement.insertBefore(section, wrapper);
-    } else {
-      wrapper.parentElement.insertBefore(section, wrapper.nextSibling);
+      // Build banner element
+      const bannerEl = document.createElement('div');
+      bannerEl.classList.add('plp-banner');
+      bannerEl.innerHTML = `
+        <aem-embed url="${fullUrl}"></aem-embed>
+      `;
+
+      if (position === 1) {
+        // insert BEFORE PLP wrapper
+        plpWrapper.parentNode.insertBefore(bannerEl, plpWrapper);
+      } else if (position === 2) {
+        // insert AFTER PLP wrapper
+        plpWrapper.parentNode.insertBefore(bannerEl, plpWrapper.nextSibling);
+      }
     }
   });
 }

@@ -97,13 +97,9 @@
     display: none;
 }
 
-/* PLP promo cards and banners */
+/* media-promo-banner overwrite */
 .block.product-list-page .dropin-product-item-card.promo-card .media-promo-banner video {
   max-height: 400px;
-}
-
-.plp-banner {
-  width: 100%;
 }
 
 /* Media Queries */
