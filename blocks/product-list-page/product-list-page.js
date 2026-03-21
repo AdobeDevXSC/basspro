@@ -24,10 +24,35 @@ import '../../scripts/initializers/wishlist.js';
 
 const FALLBACK_IMAGE = '/media/media_13cbe09de7657f35c6a24033b71b00c1e0f08797c.jpg';
 
+const PLP_PROMOS_JSON = '/fragments/plp-promos/query-index.json';
+const PLP_BANNERS_JSON = '/fragments/plp-banners/query-index.json';
+
 export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
   const config = readBlockConfig(block);
+
+  if (window.location.href.includes('search?q=')) block.classList.add('search');
+
+  let promosData = [];
+  let bannersData = [];
+
+  try {
+    const res = await fetch(PLP_PROMOS_JSON);
+    const resJson = await res.json();
+    promosData = resJson.data || [];
+    promosData.sort((a, b) => Number(a.row) - Number(b.row));
+  } catch (e) {
+    console.warn('PLP promos not loaded:', e.message);
+  }
+
+  try {
+    const res = await fetch(PLP_BANNERS_JSON);
+    const resJson = await res.json();
+    bannersData = resJson.data || [];
+  } catch (e) {
+    console.warn('PLP banners not loaded:', e.message);
+  }
 
   const fragment = document.createRange().createContextualFragment(`
     <div class="search__wrapper">
@@ -210,6 +235,11 @@ export default async function decorate(block) {
     })($productList),
   ]);
 
+  // Insert PLP banners (above/below the PLP wrapper)
+  if (bannersData.length > 0) {
+    insertBanner(block, bannersData);
+  }
+
   // Listen for search results (event is fired before the block is rendered; eager: true)
   events.on('search/result', (payload) => {
     const totalCount = payload.result?.totalCount || 0;
@@ -222,10 +252,15 @@ export default async function decorate(block) {
       : `${totalCount} results found.`;
 
     // Update the view facets button with the number of filters
-    if (payload.request.filter.length > 0) {
+    if (payload.request?.filter?.length > 0) {
       $viewFacets.querySelector('button').setAttribute('data-count', payload.request.filter.length);
     } else {
       $viewFacets.querySelector('button').removeAttribute('data-count');
+    }
+
+    // Insert PLP promos into the product grid
+    if (promosData.length > 0) {
+      waitForGrid(block, () => insertPromo(block, promosData));
     }
   }, { eager: true });
 
@@ -252,7 +287,91 @@ export default async function decorate(block) {
 
     // Update the URL
     window.history.pushState({}, '', url.toString());
+
+    // Re-insert PLP promos when grid is re-rendered (pagination, filters, etc.)
+    if (promosData.length > 0) {
+      waitForGrid(block, () => insertPromo(block, promosData));
+    }
   }, { eager: false });
+}
+
+function waitForGrid(block, callback, attempts = 0) {
+  const maxAttempts = 50;
+  const grid = block.querySelector('.product-discovery-product-list__grid');
+  if (grid) {
+    callback();
+  } else if (attempts < maxAttempts) {
+    requestAnimationFrame(() => waitForGrid(block, callback, attempts + 1));
+  }
+}
+
+function getResponsiveSpan(span) {
+  const width = window.innerWidth;
+  if (width >= 1280) return span;
+  if (width >= 1024) return Math.min(span, 3);
+  if (width >= 768) return Math.min(span, 2);
+  return 1;
+}
+
+function insertPromo(block, promosData) {
+  const grid = block.querySelector('.product-discovery-product-list__grid');
+  if (!grid) return;
+
+  // Remove existing promo cards to avoid duplicates on re-render
+  grid.querySelectorAll('.promo-card').forEach((el) => el.remove());
+
+  const currentURL = window.location.pathname;
+  const columns = 4;
+
+  promosData.forEach((promo) => {
+    if (promo.category !== currentURL) return;
+
+    const row = Number(promo.row) || 1;
+    const position = Number(promo.position) || 1;
+    const span = Number(promo.span) || 1;
+
+    const items = [...grid.children];
+    const rowStartIndex = (row - 1) * columns;
+    const insertIndex = rowStartIndex + (position - 1);
+
+    const card = document.createElement('div');
+    card.className = 'dropin-product-item-card promo-card';
+    card.dataset.originalSpan = span;
+    card.style.gridColumn = `span ${getResponsiveSpan(span)}`;
+
+    const fullUrl = new URL(promo.path, window.location.origin).href;
+    card.innerHTML = `<aem-embed url="${fullUrl}"></aem-embed>`;
+
+    if (insertIndex >= items.length) {
+      grid.appendChild(card);
+    } else {
+      grid.insertBefore(card, items[insertIndex]);
+    }
+  });
+}
+
+function insertBanner(block, bannersData) {
+  const wrapper = block.closest('.product-list-page-wrapper') || block.parentElement;
+  if (!wrapper) return;
+
+  const currentURL = window.location.pathname;
+
+  bannersData.forEach((banner) => {
+    if (banner.category !== currentURL) return;
+
+    const position = parseInt(banner.position, 10) || 1;
+    const fullUrl = new URL(banner.path, window.location.origin).href;
+
+    const section = document.createElement('div');
+    section.className = 'plp-banner';
+    section.innerHTML = `<aem-embed url="${fullUrl}"></aem-embed>`;
+
+    if (position === 1) {
+      wrapper.parentElement.insertBefore(section, wrapper);
+    } else {
+      wrapper.parentElement.insertBefore(section, wrapper.nextSibling);
+    }
+  });
 }
 
 function getSortFromParams(sortParam) {
