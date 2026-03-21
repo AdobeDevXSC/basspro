@@ -1,5 +1,4 @@
 version: 1
-auto-generated: true
 indices:
   sitemap:
     target: /sitemap.json
