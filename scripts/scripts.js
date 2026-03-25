@@ -22,6 +22,7 @@ import {
   IS_UE,
   IS_DA,
 } from './commerce.js';
+import { buildClubHeroBlockFromFragment } from '../blocks/club-hero/club-hero.js';
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -94,6 +95,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  buildClubHeroBlockFromFragment(main);
   decorateBlocks(main);
 }
 

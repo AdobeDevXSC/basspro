@@ -1,0 +1,356 @@
+/* Scoped tokens — comp: sunset hero, white type, white / black|navy buttons */
+.club-hero {
+    --club-hero-text: #fff;
+    --club-hero-overlay-mid: rgb(0 0 0 / 18%);
+    --club-hero-overlay-edge: rgb(0 0 0 / 42%);
+    --club-hero-btn-bg: #fff;
+    --club-hero-btn-text-center: #111;
+    --club-hero-btn-text-panel: #0f2844;
+    --club-hero-rule: rgb(255 255 255 / 82%);
+    --club-hero-btn-radius: 4px;
+
+    position: relative;
+    overflow: hidden;
+    min-height: 300px;
+    aspect-ratio: 1920 / 520;
+    max-height: min(56vh, 540px);
+    display: flex;
+    flex-direction: column;
+    font-family: montserrat, 'Helvetica Neue', helvetica, arial, sans-serif;
+}
+
+/* Background — full bleed */
+.club-hero > .club-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.club-hero-bg picture,
+.club-hero-bg img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Legibility on bright sunset — heavier at edges, lighter mid */
+.club-hero > .club-hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        105deg,
+        var(--club-hero-overlay-edge) 0%,
+        var(--club-hero-overlay-mid) 42%,
+        var(--club-hero-overlay-mid) 58%,
+        var(--club-hero-overlay-edge) 100%
+    );
+    pointer-events: none;
+}
+
+/* Card | CTA | member columns */
+.club-hero-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+    gap: 28px;
+}
+
+/* Credit card */
+.club-hero-card {
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.club-hero-card picture {
+    display: block;
+}
+
+.club-hero-card img {
+    width: clamp(176px, 22vw, 268px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 28px rgb(0 0 0 / 50%));
+}
+
+/* Center: stacked headline, primary button, legal line */
+.club-hero-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+}
+
+.club-hero-cta h2 {
+    color: var(--club-hero-text);
+    margin: 0 0 20px;
+    max-width: 20em;
+    font-size: clamp(1.65rem, 1.1rem + 2.4vw, 2.85rem);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 14px rgb(0 0 0 / 45%);
+}
+
+.club-hero-cta h2 sup {
+    font-size: 0.55em;
+    vertical-align: super;
+}
+
+.club-hero-cta p {
+    color: var(--club-hero-text);
+    margin: 0;
+    font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+}
+
+.club-hero-cta p + p {
+    margin-top: 10px;
+}
+
+.club-hero-cta p a {
+    color: var(--club-hero-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
+
+.club-hero-cta p a:hover {
+    color: rgb(255 255 255 / 90%);
+}
+
+.club-hero-cta .button-container {
+    margin: 0 0 14px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Primary — white pill, black caps (comp center button) */
+.club-hero-cta .button-container a.button,
+.club-hero-cta p strong a {
+    display: inline-block;
+    padding: 14px 40px;
+    min-width: min(100%, 220px);
+    box-sizing: border-box;
+    border: 2px solid var(--club-hero-btn-bg);
+    background: var(--club-hero-btn-bg);
+    color: var(--club-hero-btn-text-center);
+    font-size: clamp(1rem, 0.92rem + 0.35vw, 1.2rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: var(--club-hero-btn-radius);
+    text-align: center;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    margin: 0;
+}
+
+.club-hero-cta .button-container a.button:hover,
+.club-hero-cta p strong a:hover {
+    background: transparent;
+    color: var(--club-hero-text);
+}
+
+/* Member area — rule from center; two left-aligned columns (desktop comp) */
+.club-hero-panels {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 480px;
+    gap: 0;
+    align-items: stretch;
+}
+
+.club-hero-panel {
+    flex: 1;
+    min-width: 0;
+    padding: 0 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.club-hero-panel + .club-hero-panel {
+    border-left: 1px solid var(--club-hero-rule);
+    padding-left: 22px;
+}
+
+.club-hero-panel h3 {
+    margin: 0 0 10px;
+    color: var(--club-hero-text);
+    font-size: clamp(0.8rem, 0.72rem + 0.35vw, 0.95rem);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 8px rgb(0 0 0 / 35%);
+}
+
+.club-hero-panel p {
+    margin: 0 0 16px;
+    color: rgb(255 255 255 / 96%);
+    font-size: clamp(0.8125rem, 0.78rem + 0.15vw, 0.9375rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: 0.02em;
+}
+
+.club-hero-panel .button-container {
+    margin-top: auto;
+    width: 100%;
+}
+
+/* Member buttons — white, dark blue caps (comp) */
+.club-hero-panel .button-container a.button,
+.club-hero-panel p strong a {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    padding: 11px 16px;
+    box-sizing: border-box;
+    border: 2px solid var(--club-hero-btn-bg);
+    background: var(--club-hero-btn-bg);
+    color: var(--club-hero-btn-text-panel);
+    font-size: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: var(--club-hero-btn-radius);
+    text-align: center;
+    white-space: normal;
+    line-height: 1.25;
+    transition: background 0.2s, color 0.2s;
+    margin: 0;
+}
+
+.club-hero-panel .button-container a.button:hover,
+.club-hero-panel p strong a:hover {
+    background: transparent;
+    color: var(--club-hero-text);
+}
+
+@media (max-width: 479px) {
+    .club-hero-panels {
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .club-hero-panel + .club-hero-panel {
+        border-left: none;
+        border-top: 1px solid var(--club-hero-rule);
+        padding-left: 18px;
+        padding-top: 22px;
+        margin-top: 6px;
+    }
+}
+
+@media (min-width: 600px) {
+    .club-hero {
+        min-height: 340px;
+    }
+
+    .club-hero-content {
+        padding: 32px 32px 36px;
+    }
+}
+
+@media (min-width: 900px) {
+    .club-hero {
+        min-height: 380px;
+    }
+
+    .club-hero-content {
+        display: grid;
+        grid-template-columns: minmax(200px, 24%) minmax(260px, 1fr) minmax(300px, 36%);
+        align-items: center;
+        justify-items: stretch;
+        column-gap: clamp(20px, 3vw, 48px);
+        row-gap: 24px;
+        padding: 36px clamp(32px, 5vw, 56px) 40px;
+        max-width: 1320px;
+    }
+
+    .club-hero-card {
+        grid-column: 1;
+        justify-self: start;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .club-hero-card img {
+        width: 100%;
+        max-width: 268px;
+    }
+
+    .club-hero-cta {
+        grid-column: 2;
+        max-width: none;
+        width: 100%;
+        justify-self: center;
+    }
+
+    .club-hero-panels {
+        grid-column: 3;
+        max-width: none;
+        width: 100%;
+        justify-self: end;
+        padding-left: clamp(20px, 2.5vw, 36px);
+        margin-left: 0;
+        border-left: 1px solid var(--club-hero-rule);
+        align-self: stretch;
+        align-items: stretch;
+    }
+
+    .club-hero-panel {
+        align-items: flex-start;
+        text-align: left;
+        padding: 4px 12px 4px 0;
+    }
+
+    .club-hero-panel + .club-hero-panel {
+        padding-left: clamp(18px, 2vw, 28px);
+        padding-right: 0;
+    }
+
+    .club-hero-panel:first-child {
+        padding-left: 0;
+    }
+
+    .club-hero-panel .button-container {
+        align-self: stretch;
+    }
+
+    .club-hero-panel .button-container a.button,
+    .club-hero-panel p strong a {
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .club-hero-cta .button-container a.button,
+    .club-hero-cta p strong a,
+    .club-hero-panel .button-container a.button,
+    .club-hero-panel p strong a {
+        transition: none;
+    }
+}
