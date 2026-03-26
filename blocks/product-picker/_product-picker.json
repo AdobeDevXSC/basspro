@@ -29,7 +29,7 @@
           "valueType": "string"
         },
         {
-          "component": "text",
+          "component": "cf-reference:sku",
           "name": "sku",
           "label": "SKU",
           "valueType": "string"

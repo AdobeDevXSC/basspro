@@ -674,6 +674,7 @@
         {
           "title": "Product Picker",
           "id": "product-picker",
+          "model": "product-picker",
           "plugins": {
             "da": {
               "name": "product-picker",
