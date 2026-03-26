@@ -74,8 +74,8 @@ export default async function decorate(block) {
   const $productList = fragment.querySelector('.search__product-list');
   const $pagination = fragment.querySelector('.search__pagination');
 
-  useZoomViewer = config.zoom || 'false';
-  useProductBadges = config.badges || 'false';
+  useZoomViewer = config.zoom === true || config.zoom === 'true';
+  useProductBadges = config.badges === true || config.badges === 'true';
 
   block.innerHTML = '';
   block.appendChild(fragment);
@@ -301,26 +301,32 @@ function insertPromo(block, promosData) {
 
   resultList.querySelectorAll('.dropin-product-item-card.promo-card').forEach((el) => el.remove());
 
-  if (useProductBadges === 'true') {
-    fetch('/extras/badges.json').then((badges) => {
-      badges.json().then((bd) => {
+  if (useProductBadges) {
+    fetch('/extras/badges.json')
+      .then((res) => {
+        if (!res.ok) throw new Error(`badges.json ${res.status}`);
+        return res.json();
+      })
+      .then((bd) => {
+        const rows = Array.isArray(bd?.data) ? bd.data : [];
         resultList.querySelectorAll('.dropin-product-item-card').forEach((el) => {
           if (el.classList.contains('promo-card')) return;
+          el.querySelectorAll('.dropin-product-item-card__badge').forEach((n) => n.remove());
           const anchor = el.querySelector('.dropin-product-item-card__title a');
           const href = anchor?.href;
-          const card = bd.data.find((bdge) => href.includes(bdge.url));
-          if (card) {
-            const badge = document.createElement('div');
-            badge.className = 'dropin-product-item-card__badge';
-            badge.innerHTML = card?.badge;
-            el.append(badge);
-          }
+          if (!href) return;
+          const row = rows.find((item) => item?.url && href.includes(item.url));
+          if (!row?.badge) return;
+          const badge = document.createElement('div');
+          badge.className = 'dropin-product-item-card__badge';
+          badge.innerHTML = row.badge;
+          el.append(badge);
         });
-      });
-    });
+      })
+      .catch((e) => console.warn('Product badges not applied:', e.message));
   }
 
-  if (useZoomViewer === 'true') {
+  if (useZoomViewer) {
     resultList.querySelectorAll('.dropin-product-item-card__image').forEach((el) => {
       el.classList.add('zoom');
     });
