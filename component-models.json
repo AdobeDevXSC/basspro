@@ -479,18 +479,7 @@
     ]
   },
   {
-    "id": "product-details",
-    "fields": [
-      {
-        "component": "text",
-        "name": "defaultSku",
-        "label": "Default SKU",
-        "description": "Optional: Specify a default product SKU if this is a template page"
-      }
-    ]
-  },
-  {
-    "id": "media-promo-banner",
+    "id": "product-card",
     "fields": [
       {
         "component": "reference",
@@ -502,23 +491,27 @@
       {
         "component": "text",
         "valueType": "string",
-        "name": "alt",
-        "label": "Alt",
-        "value": ""
+        "name": "imageAlt",
+        "label": "Image Alt",
+        "multi": false
       },
       {
         "component": "richtext",
-        "name": "description",
+        "name": "text",
         "value": "",
-        "label": "Description",
+        "label": "Text",
         "valueType": "string"
-      },
+      }
+    ]
+  },
+  {
+    "id": "product-details",
+    "fields": [
       {
         "component": "text",
-        "name": "url",
-        "value": "",
-        "label": "URL Link",
-        "valueType": "string"
+        "name": "defaultSku",
+        "label": "Default SKU",
+        "description": "Optional: Specify a default product SKU if this is a template page"
       }
     ]
   },
@@ -530,18 +523,6 @@
         "name": "urlpath",
         "label": "URL Path",
         "description": "URL Path of the category as defined in the catalog (not CMS)"
-      },
-      {
-        "component": "boolean",
-        "label": "Zoom Product Image on Hover",
-        "name": "zoom",
-        "valueType": "boolean"
-      },
-      {
-        "component": "boolean",
-        "label": "Product Badges",
-        "name": "badges",
-        "valueType": "boolean"
       }
     ]
   },

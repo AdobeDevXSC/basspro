@@ -568,41 +568,49 @@
       "id": "product",
       "components": [
         {
+          "title": "Product Cards",
+          "id": "product-cards",
+          "model": "product-cards",
+          "filter": "product-cards",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 2
+            }
+          }
+        },
+        {
+          "title": "Product Card",
+          "id": "product-card",
+          "model": "product-card",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "text",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
+            }
+          }
+        },
+        {
           "title": "Product Details",
           "id": "product-details",
           "model": "product-details",
           "plugins": {
             "da": {
               "type": "key-value-block"
-            }
-          }
-        },
-        {
-          "title": "Media Promo Banner",
-          "id": "media-promo-banner",
-          "model": "media-promo-banner",
-          "plugins": {
-            "da": {
-              "rows": 4,
-              "columns": 2,
-              "fields": [
-                {
-                  "name": "image",
-                  "selector": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]"
-                },
-                {
-                  "name": "alt",
-                  "selector": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]"
-                },
-                {
-                  "name": "description",
-                  "selector": "div:nth-child(2)"
-                },
-                {
-                  "name": "url",
-                  "selector": "div:nth-child(3)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]"
-                }
-              ]
             }
           }
         },

@@ -1,19 +1,199 @@
 footer {
-    background-color: var(--color-neutral-100);
+    background-color: var(--color-neutral-50);
     font: var(--type-body-2-default-font);
     letter-spacing: var(--type-body-2-default-letter-spacing);
+    color: var(--color-neutral-800);
 }
 
 footer .footer > div {
     margin: auto;
     max-width: 1200px;
-    padding: 40px 24px 24px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 footer .footer p {
     margin: 0;
 }
 
+/* Contact bar - first section */
+footer .footer > div > .section:first-child {
+    background-color: #e8e1d4;
+    margin: 0 calc(-50vw + 50%);
+    padding: 0 calc(50vw - 50%);
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+footer .footer > div > .section:first-child .default-content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 0;
+}
+
+footer .footer > div > .section:first-child .default-content-wrapper > p {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+}
+
+footer .footer > div > .section:first-child .default-content-wrapper > p strong {
+    font: var(--type-body-2-strong-font);
+    letter-spacing: var(--type-body-2-strong-letter-spacing);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+footer .footer > div > .section:first-child .default-content-wrapper > p a {
+    color: var(--color-neutral-800);
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+footer .footer > div > .section:first-child .default-content-wrapper > p a:hover {
+    text-decoration: underline;
+}
+
+footer .footer > div > .section:first-child .icon {
+    height: 1.8rem;
+    width: 1.8rem;
+}
+
+/* Main footer content area - each section becomes a column */
+footer .footer > div > .section:not(:first-child) {
+    padding: 32px 24px;
+    flex: 1 1 100%;
+    min-width: 0;
+}
+
+/* Column headings */
+footer .footer .default-content-wrapper h2,
+footer .footer .default-content-wrapper h3,
+footer .footer .default-content-wrapper h4,
+footer .footer .default-content-wrapper h5 {
+    font: var(--type-body-1-strong-font);
+    letter-spacing: var(--type-body-1-strong-letter-spacing);
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    color: var(--color-neutral-900);
+    font-size: 1.4rem;
+    line-height: 2rem;
+}
+
+/* Link lists */
+footer .footer .default-content-wrapper ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer .footer .default-content-wrapper ul li {
+    margin-bottom: 8px;
+}
+
+footer .footer .default-content-wrapper ul li a {
+    color: var(--color-neutral-800);
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    text-decoration: none;
+    font-weight: 300;
+}
+
+footer .footer .default-content-wrapper ul li a:hover {
+    text-decoration: underline;
+    color: var(--color-neutral-900);
+}
+
+/* Newsletter / signup section */
+footer .footer .default-content-wrapper .button-container {
+    margin-top: 12px;
+}
+
+footer .footer .default-content-wrapper .button-container a.button {
+    background-color: var(--color-neutral-50);
+    color: var(--color-neutral-900);
+    border: var(--shape-border-width-2) solid var(--color-neutral-900);
+    border-radius: 0;
+    padding: 8px 24px;
+    font: var(--type-body-2-strong-font);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 0;
+}
+
+footer .footer .default-content-wrapper .button-container a.button:hover {
+    background-color: var(--color-neutral-900);
+    color: var(--color-neutral-50);
+    text-decoration: none;
+}
+
+footer .footer input[type="email"],
+footer .footer input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: var(--shape-border-width-1) solid var(--color-neutral-400);
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    box-sizing: border-box;
+    background: var(--color-neutral-50);
+    color: var(--color-neutral-800);
+}
+
+footer .footer input[type="email"]:focus,
+footer .footer input[type="text"]:focus {
+    outline: none;
+    border-color: var(--color-neutral-700);
+}
+
+footer .footer input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: var(--color-neutral-800);
+}
+
+footer .footer label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font: var(--type-details-caption-2-font);
+    letter-spacing: var(--type-details-caption-2-letter-spacing);
+    color: var(--color-neutral-700);
+    margin-top: 8px;
+}
+
+/* Icon links (SMS, Catalog, Mobile App) */
+footer .footer .default-content-wrapper p .icon {
+    height: 2rem;
+    width: 2rem;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+/* Disclaimer / small text */
+footer .footer .default-content-wrapper p {
+    font: var(--type-details-caption-2-font);
+    letter-spacing: var(--type-details-caption-2-letter-spacing);
+    color: var(--color-neutral-700);
+    margin: 6px 0;
+}
+
+footer .footer .default-content-wrapper p a {
+    color: var(--color-neutral-800);
+    font: var(--type-details-caption-2-font);
+    letter-spacing: var(--type-details-caption-2-letter-spacing);
+    text-decoration: underline;
+}
+
+/* Storeview switcher */
 .storeview-switcher-button {
     background: transparent;
     padding-left: 0;
@@ -66,8 +246,17 @@ footer .footer p {
     margin-bottom: var(--spacing-small);
 }
 
+/* Tablet: 2 columns */
+@media (min-width: 600px) {
+    footer .footer > div > .section:not(:first-child) {
+        flex: 1 1 calc(50% - 48px);
+    }
+}
+
+/* Desktop: sections share the row equally */
 @media (min-width: 900px) {
-    footer .footer > div {
-        padding: 40px 32px 24px;
+    footer .footer > div > .section:not(:first-child) {
+        flex: 1 1 0;
+        padding: 40px 32px;
     }
 }
