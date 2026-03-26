@@ -553,6 +553,24 @@
     ]
   },
   {
+    "id": "product-picker",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "headline",
+        "value": "This is a headline",
+        "label": "Headline",
+        "valueType": "string"
+      },
+      {
+        "component": "cf-reference:sku",
+        "name": "sku",
+        "label": "SKU",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "product-recommendations",
     "fields": [
       {
