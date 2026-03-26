@@ -82,6 +82,12 @@
     ]
   },
   {
+    "id": "category-cards",
+    "components": [
+      "category-card"
+    ]
+  },
+  {
     "id": "product-cards",
     "components": [
       "product-card"
