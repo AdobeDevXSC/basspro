@@ -8,6 +8,8 @@ export default async function decorate(block) {
   skus = skus ? skus.textContent.split(',') : [''];
   const ul = document.createElement('ul');
 
+  console.log("skus", skus);
+
   const productsResponse = await fetch(products);
   if (productsResponse.ok) {
     const p = await productsResponse.json();
