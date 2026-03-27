@@ -11,7 +11,7 @@ export default async function decorate(block) {
   const productsResponse = await fetch(products);
   if (productsResponse.ok) {
     const p = await productsResponse.json();
-    console.log(p);
+    console.log("product picker data", p);
     p.data.forEach(product => skus.forEach(sku => {
       if (product.SKU === sku) {
         const li = document.createElement('li');
