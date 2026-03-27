@@ -566,7 +566,7 @@
         "component": "cf-reference:sku",
         "name": "sku",
         "label": "SKU",
-        "value": "TW510640",
+        "value": "",
         "valueType": "string"
       }
     ]
