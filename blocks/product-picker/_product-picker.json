@@ -7,11 +7,11 @@
       "plugins": {
         "da": {
           "name": "product-picker",
-          "rows": 1,
-          "columns": 2,
+          "rows": 2,
+          "columns": 1,
           "fields": [
             { "name": "headline", "selector": "div:nth-child(1)>div" },
-            { "name": "sku", "selector": "div:nth-child(2)>div" }
+            { "name": "sku", "selector": "div:nth-child(2)>div>p" }
           ]
         }
       }
@@ -32,7 +32,7 @@
           "component": "cf-reference:sku",
           "name": "sku",
           "label": "SKU",
-          "value": "12345",
+          "value": "TW510640",
           "valueType": "string"
         }
       ]
