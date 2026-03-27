@@ -7,8 +7,8 @@
       "plugins": {
         "da": {
           "name": "product-picker",
-          "rows": 2,
-          "columns": 1,
+          "rows": 1,
+          "columns": 2,
           "fields": [
             { "name": "headline", "selector": "div:nth-child(1)>div" },
             { "name": "sku", "selector": "div:nth-child(2)>div" }
