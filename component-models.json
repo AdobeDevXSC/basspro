@@ -566,7 +566,6 @@
         "component": "cf-reference:sku",
         "name": "sku",
         "label": "SKU",
-        "value": "12345",
         "valueType": "string"
       }
     ]
