@@ -1,7 +1,7 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
-  const products = 'https://main--demo-boilerplate--lamontacrook.aem.page/misc/products.json?sheet=tommy-bahama';
+  const products = 'https://main--basspro--adobedevxsc.aem.page/demo-pp/bps.json';
 
   const lastDiv = [...block.children].pop();
   let skus = lastDiv.querySelector('p');
