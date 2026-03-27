@@ -1,0 +1,25 @@
+.product-picker {
+    padding: 20px;
+    background-color: var(--overlay-background-color);
+}
+
+.product-picker ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.product-picker p {
+    display: none;
+}
+
+.product-picker li p {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}

@@ -1,0 +1,42 @@
+{
+  "definitions": [
+    {
+      "title": "Product Picker",
+      "id": "product-picker",
+      "model": "product-picker",
+      "plugins": {
+        "da": {
+          "name": "product-picker",
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "headline", "selector": "div:nth-child(1)>div" },
+            { "name": "sku", "selector": "div:nth-child(2)>div" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "product-picker",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "headline",
+          "value": "This is a headline",
+          "label": "Headline",
+          "valueType": "string"
+        },
+        {
+          "component": "cf-reference:sku",
+          "name": "sku",
+          "label": "SKU",
+          "value": "12345",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

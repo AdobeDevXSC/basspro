@@ -670,6 +670,22 @@
               "type": "key-value-block"
             }
           }
+        },
+        {
+          "title": "Product Picker",
+          "id": "product-picker",
+          "model": "product-picker",
+          "plugins": {
+            "da": {
+              "name": "product-picker",
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                { "name": "headline", "selector": "div:nth-child(1)>div" },
+                { "name": "sku", "selector": "div:nth-child(2)>div" }
+              ]
+            }
+          }
         }
       ]
     }
