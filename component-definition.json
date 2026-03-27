@@ -682,7 +682,7 @@
               "columns": 1,
               "fields": [
                 { "name": "headline", "selector": "div:nth-child(1)>div" },
-                { "name": "sku", "selector": "div:nth-child(2)>div" }
+                { "name": "sku", "selector": "div:nth-child(2)>div>p" }
               ]
             }
           }
