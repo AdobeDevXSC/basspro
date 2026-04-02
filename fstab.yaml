@@ -5,3 +5,5 @@ mountpoints:
 
 folders:
   /products/: /products/default
+  /basspro/products/: /basspro/products/default
+  /cabellas/products/: /cabellas/products/default

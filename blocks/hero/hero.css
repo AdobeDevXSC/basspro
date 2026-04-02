@@ -117,3 +117,195 @@
     padding: 12px 40px;
   }
 }
+
+/* Cabela’s-style hero when `body` has `.cabelas` (centered copy + CTA over full-bleed image) */
+body.cabelas .hero {
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: auto;
+  min-height: clamp(400px, 55vw, 600px);
+  padding: 32px 24px;
+  text-align: center;
+}
+
+body.cabelas .hero > div:nth-child(2),
+body.cabelas .hero > div:nth-child(3) {
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body.cabelas .hero > div:nth-child(3) {
+  width: auto;
+  margin-top: 0;
+}
+
+body.cabelas .hero .text-content-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 56rem;
+  z-index: 1;
+}
+
+/* Eyebrow + side rules: wrap label in <span> inside e.g. <p class="hero-eyebrow"> */
+body.cabelas .hero .hero-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0 0 0.25rem;
+  width: 100%;
+  max-width: 28rem;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+body.cabelas .hero .hero-eyebrow::before,
+body.cabelas .hero .hero-eyebrow::after {
+  content: '';
+  flex: 1 1 3rem;
+  height: 1px;
+  max-width: 5rem;
+  background-color: #fff;
+  opacity: 0.95;
+}
+
+body.cabelas .hero .hero-eyebrow span {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+body.cabelas .hero h1 {
+  position: relative;
+  line-height: 0.95;
+  color: #fff;
+  font-size: clamp(2.25rem, 7vw, 4.25rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 2px 24px rgb(0 0 0 / 45%);
+}
+
+body.cabelas .hero h1 picture {
+  margin: 0 auto;
+}
+
+body.cabelas .hero h1 img {
+  width: min(100%, 720px);
+  max-height: none;
+  filter: drop-shadow(0 4px 20px rgb(0 0 0 / 35%));
+}
+
+/* Text title when authors use a heading without a logo image */
+body.cabelas .hero h1:not(:has(picture)) {
+  line-height: 1;
+}
+
+/* Decorative “track” marks (tan) overlapping the wordmark area */
+body.cabelas .hero .text-content-wrapper::before,
+body.cabelas .hero .text-content-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 2.25rem;
+  height: 2.75rem;
+  background: radial-gradient(ellipse 45% 55% at 50% 40%, rgb(196 165 116 / 90%) 0%, transparent 72%),
+    radial-gradient(ellipse 40% 50% at 70% 65%, rgb(196 165 116 / 75%) 0%, transparent 70%);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body.cabelas .hero .text-content-wrapper::before {
+  left: clamp(4%, 12vw, 18%);
+  transform: translateY(-40%) rotate(-12deg);
+}
+
+body.cabelas .hero .text-content-wrapper::after {
+  right: clamp(4%, 12vw, 18%);
+  transform: translateY(-20%) rotate(8deg);
+}
+
+body.cabelas .hero:not(:has(.text-content-wrapper)) h1::before,
+body.cabelas .hero:not(:has(.text-content-wrapper)) h1::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 2rem;
+  height: 2.5rem;
+  background: radial-gradient(ellipse 45% 55% at 50% 40%, rgb(196 165 116 / 90%) 0%, transparent 72%);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body.cabelas .hero:not(:has(.text-content-wrapper)) h1::before {
+  left: clamp(-5%, 2vw, 8%);
+  transform: translateY(-35%) rotate(-12deg);
+}
+
+body.cabelas .hero:not(:has(.text-content-wrapper)) h1::after {
+  right: clamp(-5%, 2vw, 8%);
+  transform: translateY(-15%) rotate(10deg);
+}
+
+body.cabelas .hero .button-container {
+  margin-top: 1.25rem;
+}
+
+body.cabelas .hero a.button,
+body.cabelas .hero .button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 0;
+  background-color: #fff;
+  color: #000;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+body.cabelas .hero a.button:hover,
+body.cabelas .hero .button:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+@media (min-width: 600px) {
+  body.cabelas .hero {
+    padding: 40px 32px;
+  }
+
+  body.cabelas .hero .hero-eyebrow {
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 900px) {
+  body.cabelas .hero {
+    padding: 48px;
+    min-height: 520px;
+  }
+
+  body.cabelas .hero h1 {
+    font-size: clamp(3rem, 5.5vw, 4.5rem);
+  }
+
+  body.cabelas .hero a.button,
+  body.cabelas .hero .button {
+    font-size: 1rem;
+    padding: 14px 36px;
+  }
+}

@@ -20,7 +20,7 @@
         "store-url": "{{STORE_URL}}",
         "store-view-currency-code": "{{CURRENCY_CODE}}",
         "storefront-template": "{{TEMPLATE_TYPE}}",
-        "view-id": "{{CATALOG_VIEW_ID}}"
+        "view-id": "c8302a68-d8ee-4f3a-9212-64498702df0b"
       },
       "plugins": {
         "picker": {
