@@ -14,7 +14,7 @@ footer {
 
 footer .footer > div {
     margin: 0 auto;
-    max-width: 1200px;
+    max-width: 1400px;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -34,7 +34,7 @@ footer .footer > div > .section:first-of-type {
 }
 
 footer .footer > div > .section:first-of-type .default-content-wrapper {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 2.5rem clamp(1.25rem, 5vw, 3rem);
     box-sizing: border-box;
