@@ -29,7 +29,7 @@
 .hero > div:nth-child(3) {
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  max-width: 1400px;
   width: 100%;
   margin-inline: auto;
 }

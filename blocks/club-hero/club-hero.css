@@ -287,7 +287,7 @@
         column-gap: clamp(20px, 3vw, 48px);
         row-gap: 24px;
         padding: 36px clamp(32px, 5vw, 56px) 40px;
-        max-width: 1320px;
+        max-width: 1400px;
     }
 
     .club-hero-card {
