@@ -1,91 +1,74 @@
+/* Footer design tokens (stacked: beige; desktop grid: light gray) */
 footer {
-    background-color: var(--color-neutral-50);
+    --footer-bg-stacked: #eae3d2;
+    --footer-bg-columns: #f2f2f2;
+    --footer-text: #2b2b2b;
+    --footer-heading-size: 1.3125rem;
+    --footer-body-size: 1.25rem;
+
+    background-color: var(--footer-bg-stacked);
     font: var(--type-body-2-default-font);
     letter-spacing: var(--type-body-2-default-letter-spacing);
-    color: var(--color-neutral-800);
+    color: var(--footer-text);
 }
 
 footer .footer > div {
-    margin: auto;
+    margin: 0 auto;
     max-width: 1200px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
 footer .footer p {
     margin: 0;
 }
 
-/* Contact bar - first section */
-footer .footer > div > .section:first-child {
-    background-color: #e8e1d4;
-    margin: 0 calc(-50vw + 50%);
-    padding: 0 calc(50vw - 50%);
+/* Primary links section: h3 Help, ul, h3 Resources, ul, h3 About, ul */
+footer .footer > div > .section:first-of-type {
     flex: 0 0 auto;
     width: 100%;
+    background-color: var(--footer-bg-stacked);
+    margin: 0;
+    padding: 0;
 }
 
-footer .footer > div > .section:first-child .default-content-wrapper {
+footer .footer > div > .section:first-of-type .default-content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 12px 0;
+    padding: 2.5rem clamp(1.25rem, 5vw, 3rem);
+    box-sizing: border-box;
 }
 
-footer .footer > div > .section:first-child .default-content-wrapper > p {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    font: var(--type-body-2-default-font);
-    letter-spacing: var(--type-body-2-default-letter-spacing);
+/* Reset global prose margins inside footer link area */
+footer .footer > div > .section:first-of-type .default-content-wrapper > h3,
+footer .footer > div > .section:first-of-type .default-content-wrapper > ul {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-footer .footer > div > .section:first-child .default-content-wrapper > p strong {
-    font: var(--type-body-2-strong-font);
-    letter-spacing: var(--type-body-2-strong-letter-spacing);
+footer .footer > div > .section:first-of-type .default-content-wrapper > h3 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    white-space: nowrap;
+    color: var(--footer-text);
+    margin-top: 2rem;
+    margin-bottom: 0.65rem;
 }
 
-footer .footer > div > .section:first-child .default-content-wrapper > p a {
-    color: var(--color-neutral-800);
-    font: var(--type-body-2-default-font);
-    letter-spacing: var(--type-body-2-default-letter-spacing);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
+footer .footer > div > .section:first-of-type .default-content-wrapper > h3:first-child {
+    margin-top: 0;
 }
 
-footer .footer > div > .section:first-child .default-content-wrapper > p a:hover {
-    text-decoration: underline;
+footer .footer > div > .section:first-of-type .default-content-wrapper > ul {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-footer .footer > div > .section:first-child .icon {
-    height: 1.8rem;
-    width: 1.8rem;
-}
-
-/* Main footer content area - each section becomes a column */
-footer .footer > div > .section:not(:first-child) {
-    padding: 32px 24px;
-    flex: 1 1 100%;
-    min-width: 0;
-}
-
-/* Column headings */
-footer .footer .default-content-wrapper h2,
-footer .footer .default-content-wrapper h3,
-footer .footer .default-content-wrapper h4,
-footer .footer .default-content-wrapper h5 {
-    font: var(--type-body-1-strong-font);
-    letter-spacing: var(--type-body-1-strong-letter-spacing);
-    text-transform: uppercase;
-    margin: 0 0 12px;
-    color: var(--color-neutral-900);
-    font-size: 1.4rem;
-    line-height: 2rem;
+footer .footer > div > .section:first-of-type .default-content-wrapper > ul + ul {
+    margin-top: 0;
 }
 
 /* Link lists */
@@ -95,21 +78,84 @@ footer .footer .default-content-wrapper ul {
     margin: 0;
 }
 
-footer .footer .default-content-wrapper ul li {
-    margin-bottom: 8px;
+footer .footer > div > .section:first-of-type .default-content-wrapper ul li {
+    margin-bottom: 0.45rem;
+    font-size: var(--footer-body-size);
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--footer-text);
+}
+
+footer .footer > div > .section:first-of-type .default-content-wrapper ul li:last-child {
+    margin-bottom: 0;
+}
+
+footer .footer .default-content-wrapper ul li p {
+    margin: 0;
+    font: inherit;
+    color: inherit;
 }
 
 footer .footer .default-content-wrapper ul li a {
-    color: var(--color-neutral-800);
-    font: var(--type-body-2-default-font);
-    letter-spacing: var(--type-body-2-default-letter-spacing);
+    color: var(--footer-text);
+    font: inherit;
     text-decoration: none;
-    font-weight: 300;
 }
 
 footer .footer .default-content-wrapper ul li a:hover {
     text-decoration: underline;
+}
+
+/* Optional: inline links inside first-section paragraphs (e.g. fragments) */
+footer .footer > div > .section:first-of-type .default-content-wrapper p a {
+    color: var(--footer-text);
+    text-decoration: none;
+}
+
+footer .footer > div > .section:first-of-type .default-content-wrapper p a:hover {
+    text-decoration: underline;
+}
+
+footer .footer > div > .section:first-of-type .icon {
+    height: 1.8rem;
+    width: 1.8rem;
+}
+
+/* Copyright / legal section */
+footer .footer > div > .section:last-of-type:not(:first-of-type) {
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    padding: 1.25rem clamp(1.25rem, 5vw, 3rem) 2rem;
+    box-sizing: border-box;
+    background-color: var(--footer-bg-stacked);
+}
+
+footer .footer > div > .section:last-of-type:not(:first-of-type) .default-content-wrapper > p {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: var(--footer-text);
+    opacity: 0.9;
+    margin: 0;
+}
+
+footer .footer > div > .section:last-of-type:not(:first-of-type) .default-content-wrapper p a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+/* Secondary headings elsewhere in footer (e.g. fragments) */
+footer .footer .default-content-wrapper h2,
+footer .footer .default-content-wrapper h4,
+footer .footer .default-content-wrapper h5 {
+    font: var(--type-body-1-strong-font);
+    letter-spacing: var(--type-body-1-strong-letter-spacing);
+    text-transform: uppercase;
+    margin: 0 0 12px;
     color: var(--color-neutral-900);
+    font-size: 1.4rem;
+    line-height: 2rem;
 }
 
 /* Newsletter / signup section */
@@ -178,21 +224,6 @@ footer .footer .default-content-wrapper p .icon {
     margin-right: 6px;
 }
 
-/* Disclaimer / small text */
-footer .footer .default-content-wrapper p {
-    font: var(--type-details-caption-2-font);
-    letter-spacing: var(--type-details-caption-2-letter-spacing);
-    color: var(--color-neutral-700);
-    margin: 6px 0;
-}
-
-footer .footer .default-content-wrapper p a {
-    color: var(--color-neutral-800);
-    font: var(--type-details-caption-2-font);
-    letter-spacing: var(--type-details-caption-2-letter-spacing);
-    text-decoration: underline;
-}
-
 /* Storeview switcher */
 .storeview-switcher-button {
     background: transparent;
@@ -246,17 +277,68 @@ footer .footer .default-content-wrapper p a {
     margin-bottom: var(--spacing-small);
 }
 
-/* Tablet: 2 columns */
-@media (min-width: 600px) {
-    footer .footer > div > .section:not(:first-child) {
-        flex: 1 1 calc(50% - 48px);
+/* Tablet+: three equal columns — Help | Resources | About (h3, ul × 3) */
+@media (min-width: 768px) {
+    footer {
+        background-color: var(--footer-bg-columns);
+    }
+
+    footer .footer > div > .section:first-of-type,
+    footer .footer > div > .section:last-of-type:not(:first-of-type) {
+        background-color: var(--footer-bg-columns);
+    }
+
+    footer .footer > div > .section:first-of-type .default-content-wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        column-gap: clamp(1.5rem, 4vw, 3rem);
+        row-gap: 0;
+        align-items: start;
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+
+    /* 1–2: Help, 3–4: Resources, 5–6: About */
+    footer .footer > div > .section:first-of-type .default-content-wrapper > :nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    footer .footer > div > .section:first-of-type .default-content-wrapper > :nth-child(2) {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    footer .footer > div > .section:first-of-type .default-content-wrapper > :nth-child(3) {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    footer .footer > div > .section:first-of-type .default-content-wrapper > :nth-child(4) {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    footer .footer > div > .section:first-of-type .default-content-wrapper > :nth-child(5) {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    footer .footer > div > .section:first-of-type .default-content-wrapper > :nth-child(6) {
+        grid-column: 3;
+        grid-row: 2;
+    }
+
+    footer .footer > div > .section:first-of-type .default-content-wrapper > h3:nth-child(3),
+    footer .footer > div > .section:first-of-type .default-content-wrapper > h3:nth-child(5) {
+        margin-top: 0;
     }
 }
 
-/* Desktop: sections share the row equally */
-@media (min-width: 900px) {
-    footer .footer > div > .section:not(:first-child) {
-        flex: 1 1 0;
-        padding: 40px 32px;
+@media (min-width: 1024px) {
+    footer .footer > div > .section:first-of-type .default-content-wrapper {
+        column-gap: clamp(2rem, 5vw, 3.5rem);
+        padding-top: 3rem;
+        padding-bottom: 3rem;
     }
 }
