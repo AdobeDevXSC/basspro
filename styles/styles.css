@@ -167,6 +167,12 @@ header {
   height: var(--nav-height);
 }
 
+@media (min-width: 900px) {
+  header {
+    height: unset;
+  }
+}
+
 main {
   grid-row: 2;
 }
