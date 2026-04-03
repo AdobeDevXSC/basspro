@@ -37,8 +37,7 @@
           "component": "text",
           "valueType": "string",
           "name": "backgroundImageAlt",
-          "label": "Background Image Alt",
-          "value": ""
+          "label": "Background Image Alt"
         },
         {
           "component": "reference",
@@ -51,15 +50,13 @@
           "component": "text",
           "valueType": "string",
           "name": "logoAlt",
-          "label": "Logo Alt",
-          "value": ""
+          "label": "Logo Alt"
         },
         {
           "component": "richtext",
           "valueType": "string",
           "name": "text",
-          "label": "CTA",
-          "value": ""
+          "label": "CTA"
         }
       ]
     }
