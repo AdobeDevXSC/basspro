@@ -31,6 +31,27 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+  plp-banners:
+    include:
+      - /fragments/plp-banners/**
+    target: /fragments/plp-banners/query-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, "content")
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, "content")
+      category:
+        select: head > meta[name="category"]
+        value: |
+          attribute(el, 'content')
+      position:
+        select: head > meta[name="position"]
+        value: |
+          attribute(el, 'content')
   enrichment:
     target: /enrichment/enrichment.json
     include:
