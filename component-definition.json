@@ -581,7 +581,7 @@
                 },
                 {
                   "name": "text",
-                  "selector": "div:nth-child(2)>h2"
+                  "selector": "div:nth-child(2)"
                 },
                 {
                   "name": "link",
