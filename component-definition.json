@@ -61,6 +61,24 @@
           }
         },
         {
+          "title": "Media Promo Banner",
+          "id": "media-promo-banner",
+          "model": "media-promo-banner",
+          "filter": "media-promo-banner",
+          "plugins": {
+            "da": {
+              "name": "media-promo-banner",
+              "rows": 1,
+              "columns": 3,
+              "fields": [
+                { "name": "backgroundImage", "selector": "div:nth-child(1)>div>picture>img[src]" },
+                { "name": "backgroundImageAlt", "selector": "div:nth-child(1)>div>picture>img[alt]" },
+                { "name": "text", "selector": "div:nth-child(3)>div" }
+              ]
+            }
+          }
+        },
+        {
           "title": "Accordion Item",
           "id": "accordion-item",
           "model": "accordion-item",
