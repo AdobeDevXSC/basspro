@@ -28,6 +28,22 @@
         "name": "sku",
         "label": "SKU",
         "description": "Optional: Specify a product SKU for this page"
+      },
+      {
+        "component": "multiselect",
+        "name": "categories",
+        "label": "Categories",
+        "description": "Optional: Specify a category for a fragment page",
+        "options": [
+          {
+            "name": "Fishing/Rod & Reels",
+            "value": "/fishing/rod-and-reel-combos/"
+          },
+          {
+            "name": "Fishing/Lures",
+            "value": "/fishing/lures/"
+          }
+        ]
       }
     ]
   },
@@ -50,21 +66,6 @@
         "component": "text",
         "name": "img:nth-child(3)[alt]",
         "label": "Alt Text"
-      },
-      {
-        "component": "multiselect",
-        "name": "categories",
-        "label": "Categories",
-        "options": [
-          {
-            "name": "Fishing/Rod & Reels",
-            "value": "/fishing/rod-and-reel-combos/"
-          },
-          {
-            "name": "Fishing/Lures",
-            "value": "/fishing/lures/"
-          }
-        ]
       }
     ]
   },
