@@ -31,7 +31,7 @@
       },
       {
         "component": "multiselect",
-        "name": "categories",
+        "name": "category",
         "label": "Categories",
         "description": "Optional: Specify a category for a fragment page",
         "options": [
