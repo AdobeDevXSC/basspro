@@ -567,43 +567,6 @@
       "id": "product",
       "components": [
         {
-          "title": "Category Cards",
-          "id": "category-cards",
-          "model": "category-cards",
-          "filter": "category-cards",
-          "plugins": {
-            "da": {
-              "rows": 1,
-              "columns": 2
-            }
-          }
-        },
-        {
-          "title": "Category Card",
-          "id": "category-card",
-          "model": "category-card",
-          "plugins": {
-            "da": {
-              "rows": 1,
-              "columns": 2,
-              "fields": [
-                {
-                  "name": "image",
-                  "selector": "div:nth-child(1)>picture>img[src]"
-                },
-                {
-                  "name": "imageAlt",
-                  "selector": "div:nth-child(1)>picture>img[alt]"
-                },
-                {
-                  "name": "text",
-                  "selector": "div:nth-child(2)"
-                }
-              ]
-            }
-          }
-        },
-        {
           "title": "Product Cards",
           "id": "product-cards",
           "model": "product-cards",
@@ -661,16 +624,6 @@
           }
         },
         {
-          "title": "Product Recommendations",
-          "id": "product-recommendations",
-          "model": "product-recommendations",
-          "plugins": {
-            "da": {
-              "type": "key-value-block"
-            }
-          }
-        },
-        {
           "title": "Product Picker",
           "id": "product-picker",
           "model": "product-picker",
@@ -680,9 +633,25 @@
               "rows": 2,
               "columns": 1,
               "fields": [
-                { "name": "headline", "selector": "div:nth-child(1)>div" },
-                { "name": "sku", "selector": "div:nth-child(2)>div>p" }
+                {
+                  "name": "headline",
+                  "selector": "div:nth-child(1)>div"
+                },
+                {
+                  "name": "sku",
+                  "selector": "div:nth-child(2)>div>p"
+                }
               ]
+            }
+          }
+        },
+        {
+          "title": "Product Recommendations",
+          "id": "product-recommendations",
+          "model": "product-recommendations",
+          "plugins": {
+            "da": {
+              "type": "key-value-block"
             }
           }
         }

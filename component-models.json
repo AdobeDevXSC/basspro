@@ -247,6 +247,32 @@
     ]
   },
   {
+    "id": "category-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "columns",
     "fields": [
       {
@@ -452,8 +478,7 @@
         "component": "text",
         "valueType": "string",
         "name": "backgroundImageAlt",
-        "label": "Background Image Alt",
-        "value": ""
+        "label": "Background Image Alt"
       },
       {
         "component": "reference",
@@ -466,41 +491,37 @@
         "component": "text",
         "valueType": "string",
         "name": "logoAlt",
-        "label": "Logo Alt",
-        "value": ""
+        "label": "Logo Alt"
       },
       {
         "component": "richtext",
         "valueType": "string",
         "name": "text",
-        "label": "CTA",
-        "value": ""
+        "label": "CTA"
       }
     ]
   },
   {
-    "id": "category-card",
+    "id": "media-promo-banner",
     "fields": [
       {
         "component": "reference",
         "valueType": "string",
-        "name": "image",
-        "label": "Image",
+        "name": "backgroundImage",
+        "label": "Background Image",
         "multi": false
       },
       {
         "component": "text",
         "valueType": "string",
-        "name": "imageAlt",
-        "label": "Image Alt",
-        "multi": false
+        "name": "backgroundImageAlt",
+        "label": "Background Image Alt"
       },
       {
         "component": "richtext",
+        "valueType": "string",
         "name": "text",
-        "value": "",
-        "label": "Text",
-        "valueType": "string"
+        "label": "CTA"
       }
     ]
   },
@@ -549,6 +570,18 @@
         "name": "urlpath",
         "label": "URL Path",
         "description": "URL Path of the category as defined in the catalog (not CMS)"
+      },
+      {
+        "component": "boolean",
+        "label": "Zoom Product Image on Hover",
+        "name": "zoom",
+        "valueType": "boolean"
+      },
+      {
+        "component": "boolean",
+        "label": "Product Badges",
+        "name": "badges",
+        "valueType": "boolean"
       }
     ]
   },
