@@ -50,6 +50,21 @@
         "component": "text",
         "name": "img:nth-child(3)[alt]",
         "label": "Alt Text"
+      },
+      {
+        "component": "multiselect",
+        "name": "categories",
+        "label": "Categories",
+        "options": [
+          {
+            "name": "Fishing/Rod & Reels",
+            "value": "/fishing/rod-and-reel-combos/"
+          },
+          {
+            "name": "Fishing/Lures",
+            "value": "/fishing/lures/"
+          }
+        ]
       }
     ]
   },
