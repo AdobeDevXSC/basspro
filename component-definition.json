@@ -581,11 +581,11 @@
                 },
                 {
                   "name": "text",
-                  "selector": "div:nth-child(2)>a[href]"
+                  "selector": "div:nth-child(1)"
                 },
                 {
                   "name": "link",
-                  "selector": "div:nth-child(3)>div"
+                  "selector": "div:nth-child(2)>a[href]"
                 }
               ]
             }

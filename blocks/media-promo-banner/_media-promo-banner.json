@@ -13,8 +13,8 @@
           "fields": [
             { "name": "backgroundImage", "selector": "div:nth-child(1)>div>picture>img[src]" },
             { "name": "backgroundImageAlt", "selector": "div:nth-child(1)>div>picture>img[alt]" },
-            { "name": "text", "selector": "div:nth-child(2)>a[href]" },
-            { "name": "link", "selector": "div:nth-child(3)>div" }
+            { "name": "text", "selector": "div:nth-child(1)" },
+            { "name": "link", "selector": "div:nth-child(2)>a[href]" }
           ]
         }
       }
