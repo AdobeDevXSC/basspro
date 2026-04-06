@@ -31,9 +31,9 @@
       },
       {
         "component": "select",
-        "name": "style",
-        "label": "Style",
-        "description": "Optional: Specify a style Cabela's or Bass Pro Shops",
+        "name": "theme",
+        "label": "Theme",
+        "description": "Optional: Specify a Theme for Cabela's or Bass Pro Shops",
         "options": [
           {
             "name": "Cabela's",
