@@ -30,6 +30,22 @@
         "description": "Optional: Specify a product SKU for this page"
       },
       {
+        "component": "select",
+        "name": "style",
+        "label": "Style",
+        "description": "Optional: Specify a style Cabela's or Bass Pro Shops",
+        "options": [
+          {
+            "name": "Cabela's",
+            "value": "cabelas"
+          },
+          {
+            "name": "Bass Pro Shops",
+            "value": "bass-pro-shops"
+          }
+        ]
+      },
+      {
         "component": "multiselect",
         "name": "category",
         "label": "Categories",
