@@ -55,6 +55,9 @@
         },
         {
           "...": "../blocks/media-promo-banner/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/category-cards/_*.json#/definitions"
         }
       ]
     },
