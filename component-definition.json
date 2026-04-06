@@ -559,6 +559,37 @@
               "type": "key-value-block"
             }
           }
+        },
+        {
+          "title": "Media Promo Banner",
+          "id": "media-promo-banner",
+          "model": "media-promo-banner",
+          "filter": "media-promo-banner",
+          "plugins": {
+            "da": {
+              "name": "media-promo-banner",
+              "rows": 1,
+              "columns": 3,
+              "fields": [
+                {
+                  "name": "backgroundImage",
+                  "selector": "div:nth-child(1)>div>picture>img[src]"
+                },
+                {
+                  "name": "backgroundImageAlt",
+                  "selector": "div:nth-child(1)>div>picture>img[alt]"
+                },
+                {
+                  "name": "text",
+                  "selector": "div:nth-child(2)"
+                },
+                {
+                  "name": "link",
+                  "selector": "div:nth-child(2)>a[href]"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -566,43 +597,6 @@
       "title": "Product",
       "id": "product",
       "components": [
-        {
-          "title": "Category Cards",
-          "id": "category-cards",
-          "model": "category-cards",
-          "filter": "category-cards",
-          "plugins": {
-            "da": {
-              "rows": 1,
-              "columns": 2
-            }
-          }
-        },
-        {
-          "title": "Category Card",
-          "id": "category-card",
-          "model": "category-card",
-          "plugins": {
-            "da": {
-              "rows": 1,
-              "columns": 2,
-              "fields": [
-                {
-                  "name": "image",
-                  "selector": "div:nth-child(1)>picture>img[src]"
-                },
-                {
-                  "name": "imageAlt",
-                  "selector": "div:nth-child(1)>picture>img[alt]"
-                },
-                {
-                  "name": "text",
-                  "selector": "div:nth-child(2)"
-                }
-              ]
-            }
-          }
-        },
         {
           "title": "Product Cards",
           "id": "product-cards",
@@ -661,16 +655,6 @@
           }
         },
         {
-          "title": "Product Recommendations",
-          "id": "product-recommendations",
-          "model": "product-recommendations",
-          "plugins": {
-            "da": {
-              "type": "key-value-block"
-            }
-          }
-        },
-        {
           "title": "Product Picker",
           "id": "product-picker",
           "model": "product-picker",
@@ -680,9 +664,25 @@
               "rows": 2,
               "columns": 1,
               "fields": [
-                { "name": "headline", "selector": "div:nth-child(1)>div" },
-                { "name": "sku", "selector": "div:nth-child(2)>div>p" }
+                {
+                  "name": "headline",
+                  "selector": "div:nth-child(1)>div"
+                },
+                {
+                  "name": "sku",
+                  "selector": "div:nth-child(2)>div>p"
+                }
               ]
+            }
+          }
+        },
+        {
+          "title": "Product Recommendations",
+          "id": "product-recommendations",
+          "model": "product-recommendations",
+          "plugins": {
+            "da": {
+              "type": "key-value-block"
             }
           }
         }

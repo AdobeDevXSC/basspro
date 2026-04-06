@@ -29,6 +29,38 @@
           "name": "sku",
           "label": "SKU",
           "description": "Optional: Specify a product SKU for this page"
+        },
+        {
+          "component": "select",
+          "name": "theme",
+          "label": "Theme",
+          "description": "Optional: Specify a Theme for Cabela's or Bass Pro Shops",
+          "options": [
+            {
+              "name": "Cabela's",
+              "value": "cabelas"
+            },
+            {
+              "name": "Bass Pro Shops",
+              "value": "bass-pro-shops"
+            }
+          ]
+        },
+        {
+          "component": "multiselect",
+          "name": "category",
+          "label": "Categories",
+          "description": "Optional: Specify a category for a fragment page",
+          "options": [
+            {
+              "name": "Fishing/Rod & Reels",
+              "value": "/fishing/rod-and-reel-combos/"
+            },
+            {
+              "name": "Fishing/Lures",
+              "value": "/fishing/lures/"
+            }
+          ]
         }
       ]
     }

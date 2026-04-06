@@ -278,6 +278,20 @@ export default async function decorate(block) {
   insertBanner(block, bannersData);
 }
 
+/**
+ * True when currentPath equals any category path in a comma-separated list from the query index.
+ * @param {string} currentPath
+ * @param {string} [categoryCsv]
+ */
+function pathnameMatchesCategoryList(currentPath, categoryCsv) {
+  if (categoryCsv == null || String(categoryCsv).trim() === '') return false;
+  return String(categoryCsv)
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .some((segment) => currentPath === segment);
+}
+
 function waitForGrid(callback) {
   const selector = '.product-discovery-product-list__grid';
 
@@ -355,7 +369,7 @@ function insertPromo(block, promosData) {
     const grid = block.querySelector('.product-discovery-product-list__grid');
     const items = Array.from(grid.children);
 
-    if (currentURL === promo.category) {
+    if (pathnameMatchesCategoryList(currentURL, promo.category)) {
       const fragmentPath = promo.path;
       const row = parseInt(promo.row, 10) || 1;
       const position = parseInt(promo.position, 10) || 1;
@@ -423,7 +437,7 @@ function insertBanner(block, data) {
   }
 
   data.forEach((banner) => {
-    if (currentURL === banner.category) {
+    if (pathnameMatchesCategoryList(currentURL, banner.category)) {
       const position = parseInt(banner.position, 10) || 1;
       const fragmentPath = banner.path;
       const baseUrl = window.location.origin;

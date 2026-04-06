@@ -623,12 +623,20 @@ function decorateBlocks(main) {
   main.querySelectorAll('div.section > div > div').forEach(decorateBlock);
 }
 
+/** Fragment URLs are embed surfaces; skip global header/footer chrome. */
+function shouldLoadSiteChrome() {
+  return !window.location.pathname.includes('/fragments/');
+}
+
 /**
  * Loads a block named 'header' into header
  * @param {Element} header header element
  * @returns {Promise}
  */
 async function loadHeader(header) {
+  if (!header || !shouldLoadSiteChrome()) {
+    return undefined;
+  }
   const headerBlock = buildBlock('header', '');
   header.append(headerBlock);
   decorateBlock(headerBlock);
@@ -641,6 +649,9 @@ async function loadHeader(header) {
  * @returns {Promise}
  */
 async function loadFooter(footer) {
+  if (!footer || !shouldLoadSiteChrome()) {
+    return undefined;
+  }
   const footerBlock = buildBlock('footer', '');
   footer.append(footerBlock);
   decorateBlock(footerBlock);
